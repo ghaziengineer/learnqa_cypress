@@ -15,5 +15,5 @@ Then("I should see buttons {string} and {string}", (signIn, signUp) => {
 });
 
 Then("I should see the {string} option", (option) => {
-  homePage.elements.tryWithoutEmailButton().should("contain.text", option);
+  homePage.elements.tryWithoutAccountButton().should("contain.text", option);
 });

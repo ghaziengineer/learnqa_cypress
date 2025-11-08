@@ -13,5 +13,5 @@ Feature: Homepage UI Verification
   Scenario: Verify Sign In and Sign Up buttons are visible
     Then I should see buttons "Sign In" and "Sign Up"
 
-  Scenario: Verify "Try Without Email" option is available
-    Then I should see the "Try Without Email" option
+  Scenario: Verify "Try Without Account" option is available
+    Then I should see the "Try Without Account" option

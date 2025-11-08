@@ -3,7 +3,7 @@ export class HomePage {
     title: () => cy.get('h1.text-4xl'),
     signInButton: () => cy.contains("Sign In"),
     signUpButton: () => cy.contains("Sign Up"),
-    tryWithoutEmailButton: () => cy.contains("Try Without Email")
+    tryWithoutAccountButton: () => cy.contains("Try Without Account")
   }
 
   visit() {
