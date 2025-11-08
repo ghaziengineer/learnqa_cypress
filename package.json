@@ -13,6 +13,7 @@
     "@badeball/cypress-cucumber-preprocessor": "^23.2.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.7",
     "@cypress/browserify-preprocessor": "^3.0.2",
+    "cross-env": "^10.1.0",
     "cypress": "^15.6.0"
   }
 }
