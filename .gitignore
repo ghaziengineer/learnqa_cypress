@@ -3,20 +3,24 @@ cypress/screenshots/
 cypress/videos/
 cypress/downloads/
 
+# Sensitive data
+cypress/fixtures/testData.json
+
 # Dependencies
 node_modules/
 package-lock.json
+
+########################################################
+########################################################
 
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
 # Environment variables
 .env
 .env.*.local
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -26,7 +30,6 @@ yarn-error.log*
 ehthumbs.db
 Thumbs.db
 Desktop.ini
-
 # IDE and editor files
 .vscode/*
 !.vscode/settings.json
@@ -37,7 +40,6 @@ Desktop.ini
 *.swp
 *.swo
 *~
-
 # Optional cache and runtime data
 .coverage
 .nyc_output

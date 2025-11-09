@@ -1,4 +1,6 @@
 {
+  "//": "ACTUAL TEST CREDENTIALS - KEEP THIS FILE SECURE AND NEVER COMMIT TO GIT",
+  "//": "This file is automatically ignored by .gitignore for security",
   "validUsers": [
     {
       "email": "ghazi@gmail.com",
@@ -52,5 +54,9 @@
       "password": "password123",
       "description": "Incomplete Email"
     }
-  ]
+  ],
+  "environments": {
+    "baseUrl": "https://www.learnaqa.info",
+    "apiUrl": "https://api.learnaqa.info"
+  }
 }

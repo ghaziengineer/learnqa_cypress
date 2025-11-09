@@ -1,0 +1,23 @@
+{
+  "//": "THIS IS A TEMPLATE FILE - Copy to testData.json and fill with actual credentials",
+  "//": "testData.json is added to .gitignore for security - never commit real credentials",
+  "validUsers": [
+    {
+      "email": "your_valid_email@example.com",
+      "password": "your_valid_password_here",
+      "description": "Primary test user"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "email": "wrong@email.com",
+      "password": "wrongpass123",
+      "description": "Incorrect Email"
+    },
+    {
+      "email": "your_valid_email@example.com",
+      "password": "incorrectPassword",
+      "description": "Incorrect Password"
+    }
+  ]
+}
