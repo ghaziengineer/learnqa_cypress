@@ -18,20 +18,25 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
+        # Remove cache since you don't have package-lock.json
 
     - name: Install dependencies
-      run: npm ci
+      run: npm install
 
     - name: Create testData.json from secret
       run: |
         echo '${{ secrets.TEST_DATA_JSON }}' > cypress/fixtures/testData.json
         echo "testData.json created from GitHub Secret"
 
+    - name: Verify test data
+      run: |
+        ls -la cypress/fixtures/
+        echo "Test data file created successfully"
+
     - name: Run Cypress tests
       run: npx cypress run --env tags="@e2e"
 
-    - name: Upload screenshots on failure
+    - name: Upload test results on failure
       if: failure()
       uses: actions/upload-artifact@v4
       with:
