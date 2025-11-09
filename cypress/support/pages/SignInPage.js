@@ -10,21 +10,32 @@ export class SignInPage {
     successMessage: () => cy.get('.success, .alert-success'),
     
     // Dashboard elements
-    dashboard: () => cy.get('.dashboard, [data-testid="dashboard"], main')
+    dashboard: () => cy.get('.dashboard, [data-testid="dashboard"], main'),
+    userProfile: () => cy.get('.user-profile, [data-testid="user-profile"], .profile')
   }
 
   enterCredentials(email, password) {
+    // Clear fields first
+    this.elements.emailInput().clear();
+    this.elements.passwordInput().clear();
+    
+    // Only type if value is provided
     if (email && email.trim() !== '') {
-      this.elements.emailInput().clear().type(email);
+      this.elements.emailInput().type(email);
     }
     
     if (password && password.trim() !== '') {
-      this.elements.passwordInput().clear().type(password);
+      this.elements.passwordInput().type(password);
     }
   }
 
   submit() {
     this.elements.submitButton().click();
+  }
+
+  // Helper method to get specific user data for programmatic tests
+  getUserData(userType = 'validUsers', index = 0) {
+    return cy.fixture('testData.json').then(data => data[userType][index]);
   }
 }
 

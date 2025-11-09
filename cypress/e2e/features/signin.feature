@@ -8,32 +8,15 @@ Feature: User Sign In Functionality
     Given I open the LearnAQA homepage
 
   @valid
-  Scenario Outline: Successful sign in with valid credentials
+  Scenario: Successful sign in with all valid credentials
     When I click on the "Sign In" button
-    And I enter email "<email>" and password "<password>"
+    And I enter credentials for a valid user
     And I submit the sign in form
     Then I should be redirected to the dashboard
 
-    Examples:
-      | email                     | password          |
-      | ghazi@gmail.com           | Learnaqa.info1    |
-      | student@learnaqa.com      | Student123!       |
-      | qa.tester@example.com     | QaTest2024!       |
-
-
-@invalid
-  Scenario Outline: Failed sign in with invalid credentials
+  @invalid
+  Scenario: Failed sign in with invalid credentials
     When I click on the "Sign In" button
-    And I enter email "<email>" and password "<password>"  
+    And I enter credentials for an invalid user
     And I submit the sign in form
     And I should remain on the sign in page
-
-    Examples:
-      | email                   | password          |
-      | wrong@email.com         | wrongpass123      |
-      | ghazi@gmail.com         | incorrectPassword |
-      | invalidformat           | pass123           |
-      |                         | somepassword      |
-      | ghazi@gmail.com         |                   |
-      | nonexistent@domain.com  | anypassword       |
-      | test@                   | password123       |
