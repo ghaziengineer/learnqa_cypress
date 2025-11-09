@@ -15,8 +15,11 @@ Feature: User Sign In Functionality
     Then I should be redirected to the dashboard
 
     Examples:
-      | email               | password          |
-      | ghazi@gmail.com     | Learnaqa.info1    |
+      | email                     | password          |
+      | ghazi@gmail.com           | Learnaqa.info1    |
+      | student@learnaqa.com      | Student123!       |
+      | qa.tester@example.com     | QaTest2024!       |
+
 
 @invalid
   Scenario Outline: Failed sign in with invalid credentials
