@@ -34,7 +34,7 @@ jobs:
         echo "Test data file created successfully"
 
     - name: Run Cypress tests
-      run: npx cypress run --env tags="@e2e"
+      run: npx cypress run
 
     - name: Upload test results on failure
       if: failure()
