@@ -9,10 +9,9 @@ Feature: User log out Functionality
     Given I open the LearnAQA homepage
 
   Scenario: Successful sign in with a valid credential then logout
-    When I click on the "Sign In" button
+    When I click on the "Top Sign In" button
     And I enter credentials for a valid user
     And I submit the sign in form
     Then I should be redirected to the dashboard
-    
     When I click on the "Logout" button
     Then I should be redirected to the home page
