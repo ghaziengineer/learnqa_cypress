@@ -14,6 +14,10 @@ When("I click on the {string} button", (buttonText) => {
     case "Sign In":
       homePage.elements.signInButton().click();
       break;
+    case "Logout":
+      signInPage.elements.LogoutButton().click();
+      break;
+
     default:
       throw new Error(`Button "${buttonText}" not implemented`);
   }
@@ -51,4 +55,9 @@ Then("I should be redirected to the dashboard", () => {
 
 Then("I should remain on the sign in page", () => {
   cy.url().should('include', '/login/');
+});
+
+Then("I should be redirected to the home page", () => {
+  cy.url().should('include', '/');
+  signInPage.elements.dashboard().should('be.visible');
 });

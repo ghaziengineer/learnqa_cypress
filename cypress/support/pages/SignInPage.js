@@ -4,7 +4,8 @@ export class SignInPage {
     emailInput: () => cy.get('input[type="email"], input[name="email"], #email, input[placeholder*="email" i]'),
     passwordInput: () => cy.get('input[type="password"], input[name="password"], #password, input[placeholder*="password" i]'),
     submitButton: () => cy.get('button[type="submit"]'),
-    
+    LogoutButton: () => cy.contains("Logout"),
+
     // Messages
     errorMessage: () => cy.get('.error, .alert-danger, .text-red-500, [data-testid*="error"]'),
     successMessage: () => cy.get('.success, .alert-success'),
