@@ -9,32 +9,24 @@ export class SignInPage {
     // Messages
     errorMessage: () => cy.get('.error, .alert-danger, .text-red-500, [data-testid*="error"]'),
     successMessage: () => cy.get('.success, .alert-success'),
-    
+
     // Dashboard elements
     dashboard: () => cy.get('.dashboard, [data-testid="dashboard"], main'),
     userProfile: () => cy.get('.user-profile, [data-testid="user-profile"], .profile')
-  }
+  };
 
   enterCredentials(email, password) {
-    // Clear fields first
     this.elements.emailInput().clear();
     this.elements.passwordInput().clear();
-    
-    // Only type if value is provided
-    if (email && email.trim() !== '') {
-      this.elements.emailInput().type(email);
-    }
-    
-    if (password && password.trim() !== '') {
-      this.elements.passwordInput().type(password);
-    }
+    if (email && email.trim() !== '') this.elements.emailInput().type(email);
+    if (password && password.trim() !== '') this.elements.passwordInput().type(password);
   }
 
   submit() {
     this.elements.submitButton().click();
   }
 
-  // Helper method to get specific user data for programmatic tests
+  // Helper method to get fixture data
   getUserData(userType = 'validUsers', index = 0) {
     return cy.fixture('testData.json').then(data => data[userType][index]);
   }
