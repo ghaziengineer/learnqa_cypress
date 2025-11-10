@@ -1,17 +1,20 @@
 export class HomePage {
   elements = {
     title: () => cy.get('h1.text-4xl'),
-    signInButton: () => cy.contains("Sign In"),
-    signUpButton: () => cy.contains("Sign Up"),
-    tryWithoutAccountButton: () => cy.contains("Try Without Account")
+
+    // Top buttons
+    topSignInButton: () => cy.get('nav').contains('button', 'Sign In'),
+    topSignUpButton: () => cy.get('nav').contains('button', 'Sign Up'),
+
+    // Middle buttons
+    middleSignUpButton: () => cy.get('section:nth-child(2)').contains('button', 'Sign Up'),
+    middleSignInButton: () => cy.get('section:nth-child(2)').contains('button', 'Sign In'),
+    tryWithoutAccountButton: () => cy.get('section:nth-child(2)').contains('button', 'Try Without Account'),
   }
 
   visit() {
     cy.visit("/");
   }
-
-  clickSignIn() {
-    this.elements.signInButton().click();
-  }
 }
+
 export const homePage = new HomePage();
