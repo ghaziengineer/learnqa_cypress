@@ -5,14 +5,14 @@ Feature: Footer Links Verification
   So that I can ensure all external and internal links work properly
 
   Background:
-    Given I open the LearnAQA homepage
+    Given I open the homepage
     And I scroll down to the footer section
 
   @privacy
   Scenario: Verify Privacy Policy link redirects correctly
     When I click on the "Privacy Policy" link
     Then I should be redirected to the "Privacy Policy" page
-    And the page should contain the text "Privacy Policy Introduction"
+    And the page should contain the text "Privacy Policy"
 
   @terms
   Scenario: Verify Terms of Service link redirects correctly

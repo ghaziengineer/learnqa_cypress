@@ -39,4 +39,4 @@ class FooterPage {
   }
 }
 
-export default new FooterPage();
+export const footerPage = new FooterPage();
