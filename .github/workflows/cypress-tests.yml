@@ -9,39 +9,48 @@ on:
 jobs:
   cypress-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name:  Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        # Remove cache since you don't have package-lock.json
+      - name:  Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      - name:  Install dependencies
+        run: npm install
 
-    - name: Create testData.json from secret
-      run: |
-        echo '${{ secrets.TEST_DATA_JSON }}' > cypress/fixtures/testData.json
-        echo "testData.json created from GitHub Secret"
+      - name:  Create testData.json from secret
+        run: |
+          echo '${{ secrets.TEST_DATA_JSON }}' > cypress/fixtures/testData.json
+          echo " testData.json created from GitHub Secret"
 
-    - name: Verify test data
-      run: |
-        ls -la cypress/fixtures/
-        echo "Test data file created successfully"
+      - name:  Verify test data
+        run: |
+          ls -la cypress/fixtures/
+          echo "Test data file created successfully"
 
-    - name: Run Cypress tests
-      run: npx cypress run
+      - name:  Run Cypress tests
+        run: npx cypress run
 
-    - name: Upload test results on failure
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress-failures
-        path: |
-          cypress/screenshots/
-          cypress/videos/
-        retention-days: 3
+      - name:  Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-failures
+          path: |
+            cypress/screenshots/
+            cypress/videos/
+          retention-days: 3
+
+###Notes          
+# To block merges when tests fail, configure branch protection in GitHub:
+# 1. Go to Repository Settings → Branches.
+# 2. Under "Branch protection rules", click "Add rule".
+# 3. Set the branch name pattern to: main
+# 4. Enable the following options:
+#    - "Require status checks to pass before merging"
+#      → Select the workflow named: Cypress Tests
+#    - (Optional) "Require branches to be up to date before merging"
