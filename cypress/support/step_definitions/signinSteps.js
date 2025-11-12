@@ -3,13 +3,6 @@ import { homePage } from "../pages/HomePage.js";
 import { signInPage } from "../pages/SignInPage.js";
 
 /**
- * Open homepage
- */
-Given("I open the LearnAQA homepage", () => {
-  homePage.visit();
-});
-
-/**
  * Generic click step for any button
  * Supports: Top Sign In, Middle Sign In, Try Without Account, Logout
  */

@@ -5,7 +5,7 @@ Feature: User Sign In Functionality
   So that I can access my learning materials and dashboard
 
   Background:
-    Given I open the LearnAQA homepage
+    Given I open the homepage
 
   @valid
   Scenario: Successful sign in using Top Sign In button
