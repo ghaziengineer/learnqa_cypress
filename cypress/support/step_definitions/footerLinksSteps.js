@@ -1,6 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { footerPage } from "../pages/FooterPage.js";
-import { homePage } from "../pages/HomePage.js";
 
 
 

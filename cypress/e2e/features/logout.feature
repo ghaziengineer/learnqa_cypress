@@ -6,7 +6,7 @@ Feature: User log out Functionality
   Then I want to logout to remain on the homepage
 
   Background:
-    Given I open the LearnAQA homepage
+    Given I open the homepage
 
   Scenario: Successful sign in with a valid credential then logout
     When I click on the "Top Sign In" button
