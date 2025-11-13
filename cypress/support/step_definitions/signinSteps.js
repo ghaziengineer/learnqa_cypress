@@ -1,10 +1,33 @@
+/**
+ * Sign IN Step Definitions
+ * 
+ * This file contains Cucumber step definitions for testing authentication functionality,
+ * including sign-in, logout, and credential management. It handles user interactions
+ * across the home page and sign-in page, supporting both valid and invalid user scenarios.
+ * 
+ * @module authenticationSteps
+ * @requires @badeball/cypress-cucumber-preprocessor
+ * @requires ../pages/HomePage
+ * @requires ../pages/SignInPage
+ */
+
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
 import { homePage } from "../pages/HomePage.js";
 import { signInPage } from "../pages/SignInPage.js";
 
 /**
- * Generic click step for any button
- * Supports: Top Sign In, Middle Sign In, Try Without Account, Logout
+ * Clicks on various authentication-related buttons throughout the application
+ * Supports multiple button locations and types with built-in visibility validation
+ * 
+ * @param {string} buttonText - The text identifier of the button to click
+ * 
+ * @example
+ * When I click on the "Top Sign In" button
+ * When I click on the "Middle Sign In" button
+ * When I click on the "Try Without Account" button
+ * When I click on the "Logout" button
+ * 
+ * @throws {Error} When the button text is not mapped to a known element
  */
 When("I click on the {string} button", (buttonText) => {
   switch(buttonText) {
@@ -26,7 +49,12 @@ When("I click on the {string} button", (buttonText) => {
 });
 
 /**
- * Enter credentials for valid users
+ * Enters credentials for a valid user using test data from fixtures
+ * Automatically selects the first valid user from the test data file
+ * Includes logging for test traceability
+ * 
+ * @example
+ * When I enter credentials for a valid user
  */
 When("I enter credentials for a valid user", () => {
   cy.fixture("testData.json").then((data) => {
@@ -37,7 +65,12 @@ When("I enter credentials for a valid user", () => {
 });
 
 /**
- * Enter credentials for invalid users
+ * Enters credentials for an invalid user using test data from fixtures
+ * Automatically selects the first invalid user from the test data file
+ * Used for testing authentication failure scenarios
+ * 
+ * @example
+ * When I enter credentials for an invalid user
  */
 When("I enter credentials for an invalid user", () => {
   cy.fixture("testData.json").then((data) => {
@@ -48,14 +81,22 @@ When("I enter credentials for an invalid user", () => {
 });
 
 /**
- * Submit sign in form
+ * Submits the sign-in form after credentials have been entered
+ * Typically used after credential entry steps to complete the authentication flow
+ * 
+ * @example
+ * When I submit the sign in form
  */
 When("I submit the sign in form", () => {
   signInPage.submit();
 });
 
 /**
- * Dashboard assertions
+ * Verifies successful redirection to the dashboard after authentication
+ * Checks both URL pattern and dashboard element visibility for comprehensive validation
+ * 
+ * @example
+ * Then I should be redirected to the dashboard
  */
 Then("I should be redirected to the dashboard", () => {
   cy.url().should("include", "/dashboard");
@@ -63,14 +104,22 @@ Then("I should be redirected to the dashboard", () => {
 });
 
 /**
- * Remain on login page assertion
+ * Verifies that the user remains on the sign-in page after failed authentication
+ * Used to validate that invalid credentials do not cause navigation
+ * 
+ * @example
+ * Then I should remain on the sign in page
  */
 Then("I should remain on the sign in page", () => {
   cy.url().should("include", "/login");
 });
 
 /**
- * Redirect to home page (for logout scenario)
+ * Verifies successful redirection to the home page after logout
+ * Validates both URL pattern and home page element visibility
+ * 
+ * @example
+ * Then I should be redirected to the home page
  */
 Then("I should be redirected to the home page", () => {
   cy.url().should("include", "/");
