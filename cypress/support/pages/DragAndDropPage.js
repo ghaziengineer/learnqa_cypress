@@ -15,27 +15,29 @@ export class DragAndDropPage {
 
   // Special items added dynamically
   specialItem(id) {
-    return cy.get(`#${id}`, { timeout: 5000 }).should('exist').and('be.visible');
+    return cy.get(`#${id}`);
   }
 
-  // Source area
+  // Source area (where all draggable items)
   sourceArea() {
-    return cy.get('.card-content .space-y-3', { timeout: 5000 }).should('be.visible');
+    return cy.get('.card-content .space-y-3').should('exist').should('be.visible');
   }
 
   // Drop zone
   dropZone() {
-    return cy.get('#drop-zone', { timeout: 5000 }).should('be.visible');
+    return cy.get('#drop-zone').should('exist').should('be.visible');
   }
 
   // Drag default item to drop zone
   dragDefaultItemToDropZone(name) {
-    this.defaultItem(name).drag('#drop-zone');
+    this.defaultItem(name).should('exist').should('be.visible')
+      .drag('#drop-zone');
   }
 
   // Drag special item to drop zone
   dragSpecialItemToDropZone(id) {
-    this.specialItem(id).drag('#drop-zone');
+    this.specialItem(id).should('exist').should('be.visible')
+      .drag('#drop-zone');
   }
 
   // Drag multiple default items
@@ -54,26 +56,28 @@ export class DragAndDropPage {
       invalid.style.top = '0';
       invalid.style.left = '0';
       doc.body.appendChild(invalid);
-
-      cy.get(`#${invalid.id}`, { timeout: 5000 }).then(() => {
-        this.defaultItem(name).drag(`#${invalid.id}`);
-      });
-
-      cy.get(`#${invalid.id}`).then(() => invalid.remove());
     });
+
+    cy.get('#invalid-drop-zone').should('exist').should('be.visible');
+    this.defaultItem(name).drag('#invalid-drop-zone');
+    cy.get('#invalid-drop-zone').then(el => el.remove());
   }
 
   // Add item button
   addItemButton() {
-    return cy.get('button.btn')
-      .contains('Add Item')
-      .should('be.visible');
+    return cy.get('button.btn').contains('Add Item').should('exist').should('be.visible');
   }
 
   // Reset button
   resetButton() {
-    return cy.contains('button', /^Reset$/).should('be.visible');
+    return cy.contains('button', /^Reset$/).should('exist').should('be.visible');
   }
+
+  waitForResetComplete() {
+  // Wait until drop zone is actually empty
+  cy.get('#drop-zone .draggable-item', { timeout: 6000 })
+    .should('have.length', 0);
+}
 
   // Progress text at bottom
   progressText() {

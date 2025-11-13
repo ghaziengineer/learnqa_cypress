@@ -31,49 +31,53 @@ When("I drag the following items from the source area to the drop zone:", (dataT
 
 // Click buttons
 When('I click the {string} button', (buttonText) => {
-  cy.contains('button', buttonText).click();
+  if (buttonText === "Reset") {
+    dragAndDropPage.resetButton().click();
+  } else if (buttonText === "Add Item") {
+    dragAndDropPage.addItemButton().click();
+  } else {
+    throw new Error(`Unknown button: ${buttonText}`);
+  }
 });
 
 // Assertions
 Then('{string} should appear in the drop zone', (itemName) => {
   if(itemName.startsWith("Special item")) {
     const id = itemName === "Special item 1" ? "buggy-item-0" : "buggy-item-1";
-    cy.get(`#${id}`, { timeout: 5000 }).should('exist').and('be.visible').and('contain.text', itemName);
+    dragAndDropPage.dropZone().find(`#${id}`).should('exist').should('be.visible');
   } else {
-    dragAndDropPage.dropZone()
-      .find(`#${itemName.toLowerCase().replace(' ', '-')}`, { timeout: 5000 })
-      .should('exist')
-      .and('be.visible');
+    const id = itemName.toLowerCase().replace(' ', '-');
+    dragAndDropPage.dropZone().find(`#${id}`).should('exist').should('be.visible');
   }
 });
 
 Then('all items should appear in the drop zone', () => {
   ['item-1','item-2','item-3','item-4'].forEach(id => {
-    cy.get(`#${id}`, { timeout: 5000 }).should('exist').and('be.visible');
+    dragAndDropPage.dropZone().find(`#${id}`).should('exist').should('be.visible');
   });
 });
 
-Then('I should see {string} in the source area', (itemName) => {
-  const id = itemName === "Special item 1" ? "buggy-item-0" : 
-             itemName === "Special item 2" ? "buggy-item-1" : 
-             itemName.toLowerCase().replace(' ', '-');
-
-  dragAndDropPage.sourceArea()
-    .find(`#${id}`, { timeout: 10000 }) // wait up to 10s
-    .should('exist')
-    .and('be.visible');
+Then('I should see {string}', (itemName) => {
+  const id = itemName === "Special item 1" ? "buggy-item-0" : itemName === "Special item 2" ? "buggy-item-1" : itemName.toLowerCase().replace(' ', '-');
+  dragAndDropPage.sourceArea().find(`#${id}`).should('exist').should('be.visible');
 });
 
 Then('the source area should contain 4 draggable items', () => {
-  dragAndDropPage.sourceArea()
-    .children({ timeout: 5000 })
-    .should('have.length', 4);
+  dragAndDropPage.sourceArea().children().should('have.length', 4);
 });
 
-Then('the drop zone should not contain {string}', (itemName) => {
-  const id = itemName.startsWith("Special item")
-    ? (itemName === "Special item 1" ? "buggy-item-0" : "buggy-item-1")
-    : itemName.toLowerCase().replace(' ', '-');
 
-  cy.get(`#${id}`, { timeout: 5000 }).should('not.exist');
+Then('the drop zone should not contain {string}', (itemName) => {
+  const idMap = {
+    "Item 1": "item-1",
+    "Item 2": "item-2",
+    "Item 3": "item-3",
+    "Item 4": "item-4"
+  };
+
+  const id = idMap[itemName];
+
+  cy.get('#drop-zone')
+    .find(`#${id}`)
+    .should('not.exist');
 });
