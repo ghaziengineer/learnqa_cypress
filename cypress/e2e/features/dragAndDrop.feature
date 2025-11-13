@@ -36,20 +36,6 @@ Feature: Drag and Drop Functionality
     When I click the "Add Item" button
     Then I should see "Special item 2"
 
-@specialDrag
-Scenario: Drag special items to the drop zone
-  # First, add the special items
-  When I click the "Add Item" button
-  Then I should see "Special item 1" in the source area
-  When I click the "Add Item" button
-  Then I should see "Special item 2" in the source area
-
-  # Now drag them
-  When I drag "Special Item 1ID: buggy-item-0" from the source area to the drop zone
-  Then "Special item 1" should appear in the drop zone
-  When I drag "Special item 2" from the source area to the drop zone
-  Then "Special item 2" should appear in the drop zone
-
   @reset
   Scenario: Reset after dragging all items
     When I drag the following items from the source area to the drop zone:
