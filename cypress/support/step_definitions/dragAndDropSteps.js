@@ -33,6 +33,8 @@ When("I drag the following items from the source area to the drop zone:", (dataT
 When('I click the {string} button', (buttonText) => {
   if (buttonText === "Reset") {
     dragAndDropPage.resetButton().click();
+        // Wait for reset to complete
+    dragAndDropPage.waitForResetComplete();
   } else if (buttonText === "Add Item") {
     dragAndDropPage.addItemButton().click();
   } else {
@@ -70,14 +72,15 @@ Then('the source area should contain 4 draggable items', () => {
 Then('the drop zone should not contain {string}', (itemName) => {
   const idMap = {
     "Item 1": "item-1",
-    "Item 2": "item-2",
+    "Item 2": "item-2", 
     "Item 3": "item-3",
     "Item 4": "item-4"
   };
 
   const id = idMap[itemName];
-
-  cy.get('#drop-zone')
-    .find(`#${id}`)
-    .should('not.exist');
+  
+  // More robust check that waits for element to be removed
+  cy.get('#drop-zone').within(() => {
+    cy.get(`#${id}`).should('not.exist');
+  });
 });

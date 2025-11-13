@@ -73,10 +73,17 @@ export class DragAndDropPage {
     return cy.contains('button', /^Reset$/).should('exist').should('be.visible');
   }
 
-  waitForResetComplete() {
-  // Wait until drop zone is actually empty
-  cy.get('#drop-zone .draggable-item', { timeout: 6000 })
-    .should('have.length', 0);
+waitForResetComplete() {
+  // Wait for drop zone to be empty of draggable items
+  cy.get('#drop-zone', { timeout: 10000 })
+    .should(($zone) => {
+      // Check that no draggable items exist in drop zone
+      const draggableItems = $zone.find('.draggable-item, [draggable="true"]');
+      expect(draggableItems.length).to.equal(0);
+    });
+  
+  // Also wait for source area to have expected items
+  this.sourceArea().children().should('have.length.at.least', 4);
 }
 
   // Progress text at bottom
