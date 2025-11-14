@@ -31,9 +31,9 @@ Feature: Drag and Drop Functionality
 
   @addSpecial
   Scenario: Add special items to source area
-    When I click the "Add Item" button
+    When I click on the "Add Item" button
     Then I should see "Special item 1"
-    When I click the "Add Item" button
+    When I click on the "Add Item" button
     Then I should see "Special item 2"
 
   @reset
@@ -44,7 +44,7 @@ Feature: Drag and Drop Functionality
       | Item 3 |
       | Item 4 |
     Then all items should appear in the drop zone
-    When I click the "Reset" button
+    When I click on the "Reset" button
     Then the source area should contain 4 draggable items
     Then the drop zone should not contain "Item 1"
     Then the drop zone should not contain "Item 2"
