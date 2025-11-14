@@ -1,4 +1,4 @@
-@dragdrop
+@dragdrop @e2e
 Feature: Drag and Drop Functionality
   As a user
   I want to drag items from the source area to the drop zone
