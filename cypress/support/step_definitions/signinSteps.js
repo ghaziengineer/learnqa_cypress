@@ -58,39 +58,3 @@ When("I enter credentials for an invalid user", () => {
 When("I submit the sign in form", () => {
   signInPage.submit();
 });
-
-/**
- * Verifies successful redirection to the dashboard after authentication
- * Checks both URL pattern and dashboard element visibility for comprehensive validation
- * 
- * @example
- * Then I should be redirected to the dashboard
- */
-Then("I should be redirected to the dashboard", () => {
-  cy.url().should("include", "/dashboard");
-  signInPage.elements.dashboard().should("be.visible");
-});
-
-/**
- * Verifies that the user remains on the sign-in page after failed authentication
- * Used to validate that invalid credentials do not cause navigation
- * 
- * @example
- * Then I should remain on the sign in page
- */
-Then("I should remain on the sign in page", () => {
-  cy.url().should("include", "/login");
-});
-
-/**
- * Verifies successful redirection to the home page after logout
- * Validates both URL pattern and home page element visibility
- * 
- * @example
- * Then I should be redirected to the home page
- */
-Then("I should be redirected to the home page", () => {
-  cy.url().should("include", "/");
-  // Optional: verify dashboard or other homepage elements
-  homePage.elements.title().should("be.visible");
-});

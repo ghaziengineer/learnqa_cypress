@@ -12,6 +12,6 @@ Feature: User log out Functionality
     When I click on the "Top Sign In" button
     And I enter credentials for a valid user
     And I submit the sign in form
-    Then I should be redirected to the dashboard
+    Then I should be redirected to the "dashboard" page
     When I click on the "Logout" button
-    Then I should be redirected to the home page
+    Then I should be redirected to the "home" page

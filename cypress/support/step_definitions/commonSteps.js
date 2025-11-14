@@ -1,8 +1,8 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
-
 import { homePage } from "../pages/HomePage.js";
 import { signInPage } from "../pages/SignInPage.js";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
+import { footerPage } from "../pages/FooterPage.js";
 
 
 /**
@@ -43,5 +43,66 @@ When("I click on the {string} button", (buttonText) => {
       break;            
     default:
       throw new Error(`Button "${buttonText}" not mapped in HomePage or SignInPage or dragAndDropPage`);
+  }
+});
+
+
+/**
+ * Verifies redirection to various application pages after user actions
+ * Validates both URL patterns and page-specific elements for comprehensive navigation testing
+ * 
+ * @param {string} type - The type of page to verify redirection to
+ * 
+ * @example
+ * Then I should be redirected to the "Privacy Policy" page
+ * Then I should be redirected to the "Terms of Service" page
+ * Then I should be redirected to the "dashboard" page
+ * Then I should be redirected to the "home" page
+ * Then I should be redirected to the "sign in" page
+ * 
+ * @throws {Error} When the page type is not mapped for redirection verification
+ */
+Then("I should be redirected to the {string} page", (type) => {
+  switch (type) {
+    case "Privacy Policy":
+      footerPage.verifyRedirection("/privacy/");
+      break;
+
+    case "Terms of Service":
+      footerPage.verifyRedirection("/terms/");
+      break;
+
+    case "dashboard":
+      cy.url().should("include", "/dashboard");
+      signInPage.elements.dashboard().should("be.visible");
+      break;
+
+    case "home":
+      cy.url().should("include", "/");
+      homePage.elements.title().should("be.visible");
+      break;
+      
+    case "sign in": 
+      cy.url().should("include", "/login");
+      break;
+
+    default:
+      throw new Error(`Unknown page type: ${type}`);
+  }
+});
+
+
+
+
+
+Then("I should be remain on to the {string} page", (type) => {
+  switch (type) {
+
+    case "sign in": 
+      cy.url().should("include", "/login");
+      break;
+
+    default:
+      throw new Error(`Unknown page type: ${type}`);
   }
 });

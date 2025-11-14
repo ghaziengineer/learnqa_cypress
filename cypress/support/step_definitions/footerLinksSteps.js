@@ -36,23 +36,6 @@ When("I click on the {string} link", (linkName) => {
   footerPage.clickLink(linkName);
 });
 
-/**
- * Vérifie que l'utilisateur est redirigé vers la page appropriée après avoir cliqué sur un lien du footer
- * Supporte les pages de politique de confidentialité et conditions d'utilisation
- * 
- * @param {string} pageType - Le type de page attendu ("Privacy Policy" ou "Terms of Service")
- * 
- * @example
- * Then I should be redirected to the "Privacy Policy" page
- * Then I should be redirected to the "Terms of Service" page
- */
-Then("I should be redirected to the {string} page", (pageType) => {
-  if (pageType.toLowerCase().includes("privacy")) {
-    footerPage.verifyRedirection("/privacy/");
-  } else if (pageType.toLowerCase().includes("terms")) {
-    footerPage.verifyRedirection("/terms/");
-  }
-});
 
 /**
  * Vérifie qu'un texte spécifique est visible sur la page courante
