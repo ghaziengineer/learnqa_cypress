@@ -115,3 +115,18 @@ Then("I should be remain on to the {string} page", (type) => {
       throw new Error(`Unknown page type: ${type}`);
   }
 });
+
+
+/**
+ * Waits for a specified number of seconds
+ * Useful for handling animations, loading states, or API delays
+ * 
+ * @param {string} seconds - The number of seconds to wait
+ * 
+ * @example
+ * Then I wait for "2" seconds
+ * Then I wait for "5" seconds
+ */
+Then("I wait for {string} seconds", (seconds) => {
+  cy.wait(parseInt(seconds) * 1000);
+});
