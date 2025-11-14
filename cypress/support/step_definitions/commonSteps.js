@@ -118,6 +118,7 @@ Then("I should be remain on to the {string} page", (type) => {
 
 
 /**
+ * Explicit wait
  * Waits for a specified number of seconds
  * Useful for handling animations, loading states, or API delays
  * 
