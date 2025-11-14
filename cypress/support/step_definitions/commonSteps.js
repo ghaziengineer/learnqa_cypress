@@ -92,9 +92,18 @@ Then("I should be redirected to the {string} page", (type) => {
 });
 
 
-
-
-
+/**
+ * Verifies that the user remains on the current page without redirection
+ * Validates that navigation away from the page did not occur after user actions
+ * Useful for testing form validation errors, failed submissions, or cancel operations
+ * 
+ * @param {string} type - The type of page that should remain visible and active
+ * 
+ * @example
+ * Then I should be remain on the "sign in" page
+ * 
+ * @throws {Error} When the page type is not mapped for persistence verification
+ */
 Then("I should be remain on to the {string} page", (type) => {
   switch (type) {
 
