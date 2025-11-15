@@ -18,3 +18,5 @@ Feature: File Operations Processing
     When I click on the "Download Template Excel" button
     Then I wait for "5" seconds
     Then the template Excel file should be downloaded successfully
+    And the downloaded file should have correct structure and headers
+

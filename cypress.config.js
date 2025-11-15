@@ -3,6 +3,7 @@ const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
 const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
 const fs = require('fs');
+const xlsx = require('xlsx'); // ✅ ADD THIS
 
 module.exports = defineConfig({
   e2e: {
@@ -34,6 +35,36 @@ module.exports = defineConfig({
             return fs.readdirSync(downloadsFolder);
           } catch (error) {
             return [];
+          }
+        },
+
+        // ✅ ADD THIS TASK ONLY
+        readExcelFile(filePath) {
+          try {
+            if (!fs.existsSync(filePath)) {
+              throw new Error(`File not found: ${filePath}`);
+            }
+            
+            const workbook = xlsx.readFile(filePath);
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const data = xlsx.utils.sheet_to_json(worksheet);
+            
+            // Get headers from the first row
+            const headers = [];
+            const range = xlsx.utils.decode_range(worksheet['!ref']);
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              const cellAddress = xlsx.utils.encode_cell({ r: range.s.r, c: C });
+              const cell = worksheet[cellAddress];
+              if (cell && cell.v) {
+                headers.push(cell.v);
+              }
+            }
+            
+            return { headers, rows: data };
+          } catch (error) {
+            console.error('Error reading Excel file:', error);
+            return null;
           }
         }
       });

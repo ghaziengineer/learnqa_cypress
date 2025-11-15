@@ -44,6 +44,35 @@ export class FileOperationsPage {
     });
   }
 
+/**
+ * Verifies that required columns exist in the Excel file
+ * 
+ * @param {string} fileName - The downloaded file name
+ * @param {string[]} requiredColumns - Array of required column names
+ */
+verifyExcelColumns(fileName, requiredColumns = ['ID', 'Name', 'Email', 'Score', 'Date']) {
+  const downloadsFolder = Cypress.config('downloadsFolder');
+  const filePath = `${downloadsFolder}/${fileName}`;
+  
+  return cy.task('readExcelFile', filePath).then((data) => {
+    cy.log('Excel file headers found:', data.headers);
+    
+    // Check if all required columns exist
+    requiredColumns.forEach(column => {
+      expect(data.headers).to.include(column, `Column "${column}" should exist in the Excel file`);
+    });
+    
+    cy.log(`✅ All required columns exist: ${requiredColumns.join(', ')}`);
+    
+    // Optional: Also verify there is data in the file
+    expect(data.rows.length).to.be.greaterThan(0, 'Excel file should contain data rows');
+    cy.log(`✅ Excel file contains ${data.rows.length} rows of data`);
+  });
+}
+
+
+
+
 }
 
 /**
