@@ -152,39 +152,9 @@ export class DragAndDropPage {
    * 
    * @returns {Cypress.Chainable} - Chainable Cypress object for the reset button
    */
+
   resetButton() {
     return cy.contains('button', /^Reset$/).should('exist').should('be.visible');
-  }
-
-  /**
-   * Waits for reset operation to complete by checking both drop zone and source area states
-   * Validates that drop zone is empty and source area has at least 4 items restored
-   * Uses extended timeout to accommodate DOM updates
-   * 
-   * @example
-   * // Ensures reset operation is complete before proceeding
-   * waitForResetComplete()
-   */
-  waitForResetComplete() {
-    // Wait for drop zone to be empty of draggable items
-    cy.get('#drop-zone', { timeout: 10000 })
-      .should(($zone) => {
-        // Check that no draggable items exist in drop zone
-        const draggableItems = $zone.find('.draggable-item, [draggable="true"]');
-        expect(draggableItems.length).to.equal(0);
-      });
-    
-    // Also wait for source area to have expected items
-    this.sourceArea().children().should('have.length.at.least', 4);
-  }
-
-  /**
-   * Gets the progress text element that displays operation status
-   * 
-   * @returns {Cypress.Chainable} - Chainable Cypress object for the progress text
-   */
-  progressText() {
-    return cy.get('#progress');
   }
 }
 
