@@ -15,18 +15,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import '@4tw/cypress-drag-drop';
 
-/**
- * Navigation step to access the Drag and Drop page from the application dashboard
- * 
- * @example
- * Given I navigate to Drag and Drop page
- * 
- * @throws {Error} If navigation fails or URL doesn't include '/drag-and-drop/'
- */
-Given("I navigate to Drag and Drop page", () => {
-  cy.contains('span', 'Drag and Drop').click();
-  cy.url().should('include', '/drag-and-drop/');
-});
+
 
 /**
  * Drags a single item from the source area to the designated drop zone

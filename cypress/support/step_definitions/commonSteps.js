@@ -118,6 +118,35 @@ Then("I should be remain on to the {string} page", (type) => {
 
 
 /**
+ * Navigation step to access various application pages from the main interface
+ * Provides generic navigation capability to different sections of the application
+ * Validates successful navigation by checking URL patterns after clicking navigation elements
+ * 
+ * @param {string} pageName - The name of the page to navigate to (case-sensitive)
+ * 
+ * @example
+ * Given I navigate to "Drag and Drop" page
+ * Given I navigate to "File Operations" page
+ * Given I navigate to "Dynamic Elements" page
+ * Given I navigate to "iFrames & Windows" page
+ * Given I navigate to "Keyboard & Mouse Events" page
+ * Given I navigate to "Shadow DOM" page
+ * @throws {Error} When the page name is not mapped for navigation or URL validation fails
+ */
+Given("I navigate to {string} page", (pageName) => {
+  switch (pageName) {
+    case "Drag and Drop": 
+      cy.contains('span', 'Drag and Drop').click();
+      cy.url().should('include', '/drag-and-drop/');
+      break;
+
+    default:
+      throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);
+  }
+});
+
+
+/**
  * Explicit wait
  * Waits for a specified number of seconds
  * Useful for handling animations, loading states, or API delays

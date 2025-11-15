@@ -8,7 +8,7 @@ Feature: Drag and Drop Functionality
     Given I open the homepage
     When I click on the "Try Without Account" button
     Then I should be redirected to the "dashboard" page
-    And I navigate to Drag and Drop page
+    And I navigate to "Drag and Drop" page
 
   @single
   Scenario: Drag a single item to the drop zone
