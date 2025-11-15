@@ -2,6 +2,7 @@ const { defineConfig } = require("cypress");
 const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
 const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
+const fs = require('fs');
 
 module.exports = defineConfig({
   e2e: {
@@ -24,7 +25,20 @@ module.exports = defineConfig({
         })
       );
 
-      // Optional: Log each failed step with stack trace
+      on('task', {
+        listFiles(downloadsFolder) {
+          try {
+            if (!fs.existsSync(downloadsFolder)) {
+              return [];
+            }
+            return fs.readdirSync(downloadsFolder);
+          } catch (error) {
+            return [];
+          }
+        }
+      });
+
+      // Log each failed step with stack trace
       on("after:spec", (spec, results) => {
         results.tests.forEach((test) => {
           test.attempts.forEach((attempt) => {

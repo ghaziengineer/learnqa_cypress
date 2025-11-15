@@ -3,6 +3,7 @@ import { homePage } from "../pages/HomePage.js";
 import { signInPage } from "../pages/SignInPage.js";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import { footerPage } from "../pages/FooterPage.js";
+import { fileOperationsPage } from "../pages/FileOperationsPage.js";
 
 
 /**
@@ -18,6 +19,8 @@ import { footerPage } from "../pages/FooterPage.js";
  * When I click on the "Logout" button
  * When I click on the "Reset" button
  * When I click on the "Add Item" button
+ * When I click on the "Download Template Excel" button
+
  * 
  * @throws {Error} When the button text is not mapped to a known element
  */
@@ -40,9 +43,14 @@ When("I click on the {string} button", (buttonText) => {
       break;
     case "Reset":
       dragAndDropPage.resetButton().should("be.visible").click();
-      break;            
+      break;  
+    case "Download Template Excel":
+      fileOperationsPage.DownloadTemplateExcel().should("be.visible").click();
+      break;   
+
+      
     default:
-      throw new Error(`Button "${buttonText}" not mapped in HomePage or SignInPage or dragAndDropPage`);
+      throw new Error(`Button "${buttonText}" not mapped in pages `);
   }
 });
 
@@ -139,6 +147,12 @@ Given("I navigate to {string} page", (pageName) => {
       cy.contains('span', 'Drag and Drop').click();
       cy.url().should('include', '/drag-and-drop/');
       break;
+
+    case "File Operations": 
+          cy.contains('span', 'File Operations').click();
+      cy.url().should("include", "/file-operations");
+      break;
+
 
     default:
       throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);

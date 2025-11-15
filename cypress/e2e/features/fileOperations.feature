@@ -9,7 +9,12 @@ Feature: File Operations Processing
     When I click on the "Top Sign In" button
     And I enter credentials for a valid user
     And I submit the sign in form
-    Then I should be redirected to the dashboard
-    And I navigate to File Operations page
+    Then I should be redirected to the "dashboard" page
+    And I navigate to "File Operations" page
 
- 
+
+   @download 
+  Scenario: Download the template Excel file with sample data
+    When I click on the "Download Template Excel" button
+    Then I wait for "5" seconds
+    Then the template Excel file should be downloaded successfully

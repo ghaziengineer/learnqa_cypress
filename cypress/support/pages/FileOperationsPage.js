@@ -4,12 +4,50 @@
 
 export class FileOperationsPage {
 
+  /**
+   * Locates and returns the "Download Template Excel" button with visibility validation
+   * 
+   * @returns {Cypress.Chainable} - Chainable Cypress object for the add Download Template Excel button
+   */
+  DownloadTemplateExcel() {
+    return cy.get('#download-template');
+  }
 
+ /**
+   * Verifies that a file has been downloaded successfully
+   * 
+   * @param {string|RegExp|Function} fileNamePattern - Pattern to match the downloaded file
+   * @param {string|null} expectedContent - Optional content to verify in the file
+   * @param {string|null} alias - Optional alias to store the filename for later use
+   * @returns {Cypress.Chainable} - Chainable Cypress object with the downloaded filename
+   */
+  verifyDownload(fileNamePattern, alias = null) {
+    return cy.task('listFiles', Cypress.config('downloadsFolder')).then((files) => {
+      cy.log('Available files:', files);
+      
+      let downloadedFile;
+      
+      if (typeof fileNamePattern === 'string') {
+        downloadedFile = files.find(file => file.includes(fileNamePattern));
+      } else if (fileNamePattern instanceof RegExp) {
+        downloadedFile = files.find(file => fileNamePattern.test(file));
+      } else if (typeof fileNamePattern === 'function') {
+        downloadedFile = files.find(fileNamePattern);
+      }
+      
+      expect(downloadedFile).to.exist;
+      cy.log(`✅ Found downloaded file: ${downloadedFile}`);
+      
+      if (alias) {
+        cy.wrap(downloadedFile).as(alias);
+      }
+    });
+  }
 
-    
 }
+
 /**
- * Pre-initialized instance of HomePage for immediate use in step definitions
+ * Pre-initialized instance of FileOperationsPage for immediate use in step definitions
  * 
  * @type {FileOperationsPage}
  */
