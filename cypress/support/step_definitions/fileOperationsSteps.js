@@ -8,8 +8,10 @@ Then('the template Excel file should be downloaded successfully', () => {
   fileOperationsPage.verifyDownload(/^template.*\.xlsx$/, 'downloadedTemplateFile');
 })
 
-Then('the downloaded file should have correct structure and headers', () => {
+Then('the file should contain the expected columns:', (dataTable) => {
+  const expectedColumns = dataTable.rawTable.map(row => row[0]);
+  
   cy.get('@downloadedTemplateFile').then((fileName) => {
-    fileOperationsPage.verifyExcelColumns(fileName);
+    fileOperationsPage.verifyExcelColumns(fileName, expectedColumns);
   });
 });
