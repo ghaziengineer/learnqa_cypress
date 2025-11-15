@@ -15,18 +15,7 @@ import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import '@4tw/cypress-drag-drop';
 
-/**
- * Navigation step to access the Drag and Drop page from the application dashboard
- * 
- * @example
- * Given I navigate to Drag and Drop page
- * 
- * @throws {Error} If navigation fails or URL doesn't include '/drag-and-drop/'
- */
-Given("I navigate to Drag and Drop page", () => {
-  cy.contains('span', 'Drag and Drop').click();
-  cy.url().should('include', '/drag-and-drop/');
-});
+
 
 /**
  * Drags a single item from the source area to the designated drop zone
@@ -71,29 +60,7 @@ When("I drag the following items from the source area to the drop zone:", (dataT
   dragAndDropPage.dragMultipleDefaultItems(items);
 });
 
-/**
- * Handles button click interactions for the drag-and-drop interface
- * Supports "Reset" and "Add Item" buttons with appropriate timing considerations
- * 
- * @param {string} buttonText - The text displayed on the button to click
- * 
- * @example
- * When I click the "Reset" button
- * When I click the "Add Item" button
- * 
- * @throws {Error} When an unknown button text is provided
- */
-When('I click the {string} button', (buttonText) => {
-  if (buttonText === "Reset") {
-    dragAndDropPage.resetButton().click();
-    // Wait for reset to complete to ensure DOM stability
-    dragAndDropPage.waitForResetComplete();
-  } else if (buttonText === "Add Item") {
-    dragAndDropPage.addItemButton().click();
-  } else {
-    throw new Error(`Unknown button: ${buttonText}`);
-  }
-});
+
 
 /**
  * Verifies that a specific item appears in the drop zone after drag operation
