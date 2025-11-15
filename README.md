@@ -1,4 +1,3 @@
-
 # 🎯LearnaQa Platform – UI & E2E Tests with Cypress, JavaScript & Cucumber
 
 ## Overview 📝
@@ -65,3 +64,4 @@ npx cypress open
 npx cypress run --env tags='@ui'
 ```
 
+![Profile view counter on GitHub](https://komarev.com/ghpvc/?username=ghaziengineer)
