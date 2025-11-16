@@ -24,3 +24,12 @@ Feature: File Operations Processing
         | Email |
         | Score |
         | Date  |
+
+  @upload
+  Scenario: Upload a valid Excel file
+    When I click on the "Browse Files" button   
+    And I select a valid file : 
+        | excel               |
+        | template_data.xlsx  |
+
+    Then the file should be uploaded successfully

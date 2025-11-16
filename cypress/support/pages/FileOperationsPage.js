@@ -66,10 +66,18 @@ verifyExcelColumns(fileName, expectedColumns) {
   });
 }
 
+/**
+ * Uploads the specified file of any type (Excel, image, PDF, doc, etc)
+ *
+ * @param {string} fileName - The name of the file to upload
+ * @param {string} [fileType] - Optional type of the file (e.g., 'excel', 'image', 'pdf', 'doc')
+ */
+uploadFile(fileName, fileType = null) {
+  cy.get('input[type="file"]').attachFile(fileName);
+}
 
 
 }
-
 /**
  * Pre-initialized instance of FileOperationsPage for immediate use in step definitions
  * 

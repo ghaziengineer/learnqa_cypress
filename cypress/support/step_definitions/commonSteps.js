@@ -5,6 +5,17 @@ import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import { footerPage } from "../pages/FooterPage.js";
 import { fileOperationsPage } from "../pages/FileOperationsPage.js";
 
+/**
+ * Page object imports for Cypress Cucumber step definitions
+ * Centralizes all page object dependencies for maintainable test automation
+ * 
+ * @namespace pageObjects
+ * @property {Object} homePage - Page object for home page interactions and elements
+ * @property {Object} signInPage - Page object for authentication flows and user session management
+ * @property {Object} dragAndDropPage - Page object for drag and drop interaction testing
+ * @property {Object} footerPage - Page object for footer navigation and link verification
+ * @property {Object} fileOperationsPage - Page object for file upload, download, and manipulation operations
+ */
 
 /**
  * Clicks on various authentication-related buttons throughout the application
@@ -47,8 +58,11 @@ When("I click on the {string} button", (buttonText) => {
     case "Download Template Excel":
       fileOperationsPage.DownloadTemplateExcel().should("be.visible").click();
       break;   
+    case "Browse Files":
+      // Do not click hidden file input, just skip this case
+      // File upload should be handled in the step definition using attachFile
+      break;   
 
-      
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages `);
   }
@@ -159,14 +173,11 @@ Given("I navigate to {string} page", (pageName) => {
   }
 });
 
-
 /**
  * Explicit wait
  * Waits for a specified number of seconds
  * Useful for handling animations, loading states, or API delays
- * 
  * @param {string} seconds - The number of seconds to wait
- * 
  * @example
  * Then I wait for "2" seconds
  * Then I wait for "5" seconds
