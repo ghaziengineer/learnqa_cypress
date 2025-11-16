@@ -12,7 +12,6 @@ Feature: File Operations Processing
     Then I should be redirected to the "dashboard" page
     And I navigate to "File Operations" page
 
-
    @download 
   Scenario: Download the template Excel file with sample data
     When I click on the "Download Template Excel" button
