@@ -11,31 +11,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name:  Checkout code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name:  Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name:  Install dependencies
+      - name: Install dependencies
         run: npm install
 
-      - name:  Create testData.json from secret
+      - name: Create testData.json from secret
         run: |
           echo '${{ secrets.TEST_DATA_JSON }}' > cypress/fixtures/testData.json
-          echo " testData.json created from GitHub Secret"
+          echo "testData.json created from GitHub Secret"
 
-      - name:  Verify test data
+      - name: Create template_data.xlsx from secret
+        run: |
+          if [ -z "${{ secrets.TEMPLATE_DATA_XLSX_BASE64 }}" ]; then
+            echo "Error: TEMPLATE_DATA_XLSX_BASE64 secret is not set."
+            exit 1
+          fi
+          echo '${{ secrets.TEMPLATE_DATA_XLSX_BASE64 }}' | base64 -d > cypress/fixtures/template_data.xlsx
+          echo "template_data.xlsx fixture created from GitHub Secret"
+
+      - name: Verify test data
         run: |
           ls -la cypress/fixtures/
-          echo "Test data file created successfully"
+          echo "Test data files created successfully"
 
-      - name:  Run Cypress tests
+      - name: Run Cypress tests
         run: npx cypress run
 
-      - name:  Upload test results on failure
+      - name: Upload test results on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
