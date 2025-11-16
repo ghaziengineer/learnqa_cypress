@@ -21,21 +21,26 @@ It is designed to help practice **real-world automation scenarios** 🧪
 │   │       ├───homepage.feautre
 │   │       ├───logout.feautre
 │   │       ├───dragAndDrop.feautre
+│   │       ├───fileOperations.feautre
 │   │       ├───footerLinks.feautre
 │   │       └───signin.feautre
 │   ├───fixtures
+│   │   ├───template_data.xlsx
 │   │   └───testData.json
 │   ├───screenshots
 │   └───support
-│   │   ├───pages
+│   │   ├───e2e.js
+│   │   └───pages
 │   │       ├───HomePage.js
 │   │       ├───FooterPage.js
+│   │       ├───FileOperationsPage.js
 │   │       ├───DragAndDropPage.js
 │   │       └───SignInPage.js
 │   │   └───step_definitions
 │   │       ├───commonSteps.js
 │   │       ├───dragAndDropSteps.js
 │   │       ├───footerLinksSteps.js
+│   │       ├───fileOperationsSteps.js
 │   │       ├───homepageSteps.js
 │   │       └───signinSteps.js
 ├───cypress.config.js
@@ -65,3 +70,4 @@ npx cypress run --env tags='@ui'
 ```
 
 ![Profile view counter on GitHub](https://komarev.com/ghpvc/?username=ghaziengineer)
+
