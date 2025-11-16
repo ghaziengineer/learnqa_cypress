@@ -17,6 +17,7 @@
     "cross-env": "^10.1.0",
     "cypress": "^15.6.0",
     "cypress-cucumber-preprocessor": "^4.3.1",
+    "cypress-file-upload": "^5.0.8",
     "json": "^11.0.0",
     "xlsx": "^0.18.5"
   }

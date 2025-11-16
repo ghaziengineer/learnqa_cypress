@@ -3,13 +3,13 @@ const createBundler = require("@bahmutov/cypress-esbuild-preprocessor");
 const { addCucumberPreprocessorPlugin } = require("@badeball/cypress-cucumber-preprocessor");
 const { createEsbuildPlugin } = require("@badeball/cypress-cucumber-preprocessor/esbuild");
 const fs = require('fs');
-const xlsx = require('xlsx'); // ✅ ADD THIS
+const xlsx = require('xlsx'); 
 
 module.exports = defineConfig({
   e2e: {
     baseUrl: "https://www.learnaqa.info",
     specPattern: "cypress/e2e/**/*.feature",
-    supportFile: false,
+    supportFile: 'cypress/support/e2e.js',
 
     // Use 'spec' reporter to see step-by-step in terminal
     reporter: "spec",
@@ -38,7 +38,6 @@ module.exports = defineConfig({
           }
         },
 
-        // ✅ ADD THIS TASK ONLY
         readExcelFile(filePath) {
           try {
             if (!fs.existsSync(filePath)) {
