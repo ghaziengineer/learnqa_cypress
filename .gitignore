@@ -4,7 +4,8 @@ cypress/videos/
 cypress/downloads/
 
 # Sensitive data
-cypress/fixtures/testData.json
+cypress/fixtures/
+
 
 # Dependencies
 node_modules/
