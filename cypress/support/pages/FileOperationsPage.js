@@ -66,8 +66,6 @@ verifyExcelColumns(fileName, expectedColumns) {
   });
 }
 
-
-
 }
 
 /**
