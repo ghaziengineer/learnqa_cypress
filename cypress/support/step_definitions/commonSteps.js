@@ -4,7 +4,7 @@ import { signInPage } from "../pages/SignInPage.js";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import { footerPage } from "../pages/FooterPage.js";
 import { fileOperationsPage } from "../pages/FileOperationsPage.js";
-
+import { dynamicElementsPage } from "../pages/DynamicElementsPage.js";  
 /**
  * Page object imports for Cypress Cucumber step definitions
  * Centralizes all page object dependencies for maintainable test automation
@@ -31,6 +31,7 @@ import { fileOperationsPage } from "../pages/FileOperationsPage.js";
  * When I click on the "Reset" button
  * When I click on the "Add Item" button
  * When I click on the "Download Template Excel" button
+ * When I click on the "Click to Show Delayed Element" button
 
  * 
  * @throws {Error} When the button text is not mapped to a known element
@@ -62,6 +63,11 @@ When("I click on the {string} button", (buttonText) => {
       // Do not click hidden file input, just skip this case
       // File upload should be handled in the step definition using attachFile
       break;   
+    case "Click to Show Delayed Element":
+      dynamicElementsPage.ClickToShowDelayedElementButton().should("be.visible").click(); 
+      break;  
+
+
 
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages `);
@@ -163,10 +169,14 @@ Given("I navigate to {string} page", (pageName) => {
       break;
 
     case "File Operations": 
-          cy.contains('span', 'File Operations').click();
-      cy.url().should("include", "/file-operations");
+      cy.contains('span', 'File Operations').click();
+      cy.url().should("include", "/file-operations/");
       break;
 
+    case "Dynamic Elements": 
+      cy.contains('span', 'Dynamic Elements').click();
+      cy.url().should("include", "/dynamic-elements/");
+      break;
 
     default:
       throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);
