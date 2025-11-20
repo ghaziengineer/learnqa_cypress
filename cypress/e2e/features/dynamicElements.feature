@@ -17,3 +17,27 @@ Feature: Dynamic Elements Practice
   Scenario: Verify delayed element appears after clicking the button
     When I click on the "Click to Show Delayed Element" button
     Then I should see the delayed element appear
+
+  @ajaxloading
+   Scenario: Verify AJAX data loads successfully
+    When I click on the "Load AJAX Data" button
+    Then I should see the loading indicator
+  And I should wait for AJAX data to load successfully
+  And I should verify the loaded AJAX content
+
+
+
+
+
+
+
+
+
+
+
+@lazyloading
+Scenario: Verify lazy loading images load when scrolled into view
+  When I scroll down to the lazy loading images section
+  Then I should see some images are loaded and some are placeholders
+  When I scroll down to load more images
+  Then I should see more images loaded

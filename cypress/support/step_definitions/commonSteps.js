@@ -66,7 +66,9 @@ When("I click on the {string} button", (buttonText) => {
     case "Click to Show Delayed Element":
       dynamicElementsPage.ClickToShowDelayedElementButton().should("be.visible").click(); 
       break;  
-
+   case "Load AJAX Data":
+      dynamicElementsPage.ClickToLoadAJAXElementButton().should("be.visible").click(); 
+      break;  
 
 
     default:
