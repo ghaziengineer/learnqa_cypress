@@ -25,19 +25,20 @@ Feature: Dynamic Elements Practice
   And I should wait for AJAX data to load successfully
   And I should verify the loaded AJAX content
 
-
-
-
-
-
-
-
-
-
-
 @lazyloading
 Scenario: Verify lazy loading images load when scrolled into view
   When I scroll down to the lazy loading images section
   Then I should see some images are loaded and some are placeholders
   When I scroll down to load more images
   Then I should see more images loaded
+
+
+  @infinitescroll
+Scenario: Verify infinite scroll loads more content automatically
+  When I scroll to the infinite scroll section
+  Then I should see the first 10 items loaded
+  When I scroll to the bottom of the infinite scroll container
+  Then I should see more items loaded automatically
+  When I continue scrolling to load all pages
+  Then I should see all 50 items loaded
+  And I should see the "No more items to load" message

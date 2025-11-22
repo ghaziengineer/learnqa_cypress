@@ -35,3 +35,35 @@ When('I scroll down to load more images', () => {
 Then('I should see more images loaded', () => {
   dynamicElementsPage.verifyMoreImagesLoaded();
 });
+
+
+
+
+
+When('I scroll to the infinite scroll section', () => {
+  dynamicElementsPage.scrollToInfiniteScrollSection();
+});
+
+Then('I should see the first 10 items loaded', () => {
+  dynamicElementsPage.verifyInitialItemsLoaded();
+});
+
+When('I scroll to the bottom of the infinite scroll container', () => {
+  dynamicElementsPage.scrollToBottomOfInfiniteScroll();
+});
+
+Then('I should see more items loaded automatically', () => {
+  dynamicElementsPage.verifyMoreItemsLoaded();
+});
+
+When('I continue scrolling to load all pages', () => {
+  dynamicElementsPage.scrollToLoadAllPages();
+});
+
+Then('I should see all 50 items loaded', () => {
+  dynamicElementsPage.verifyAllItemsLoaded();
+});
+
+Then('I should see the "No more items to load" message', () => {
+  dynamicElementsPage.verifyNoMoreItemsMessage();
+});

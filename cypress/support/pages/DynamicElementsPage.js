@@ -105,6 +105,128 @@ verifyAJAXContent() {
     cy.get('.lazy-image-placeholder img[src*="picsum.photos"]')
       .should('have.length.at.least', 1);
   }
+
+
+ /**
+   * Scrolls to the infinite scroll section
+   */
+  scrollToInfiniteScrollSection() {
+    cy.get('#infinite-scroll-container')
+      .scrollIntoView()
+      .should('be.visible');
+  }
+
+  /**
+   * Verifies the first 10 items are loaded
+   */
+  verifyInitialItemsLoaded() {
+    cy.get('.scroll-item')
+      .should('have.length', 10)
+      .first()
+      .should('contain', 'Item 1')
+      .and('contain', 'Page 1');
+    
+    cy.get('.scroll-item')
+      .last()
+      .should('contain', 'Item 10')
+      .and('contain', 'Page 1');
+  }
+
+  /**
+   * Scrolls to the bottom of the infinite scroll container
+   */
+  scrollToBottomOfInfiniteScroll() {
+    cy.get('#infinite-scroll-container')
+      .scrollTo('bottom', { duration: 1000 });
+    
+    // Wait for new items to load
+    cy.wait(2000);
+  }
+
+  /**
+   * Verifies more items loaded after scrolling
+   */
+  verifyMoreItemsLoaded() {
+    cy.get('.scroll-item')
+      .should('have.length.at.least', 20)
+      .then(($items) => {
+        // Check that we have items from page 2
+        const page2Items = $items.filter(':contains("Page 2")');
+        expect(page2Items.length).to.be.at.least(1);
+      });
+  }
+
+  /**
+   * Scrolls multiple times to load all pages
+   */
+  scrollToLoadAllPages() {
+    const container = '#infinite-scroll-container';
+    
+    // Scroll multiple times to trigger all page loads
+    for (let i = 0; i < 4; i++) {
+      cy.get(container).scrollTo('bottom', { duration: 1000 });
+      cy.wait(1500);
+      
+      // Check current count and break if we have all items
+      cy.get('.scroll-item').then(($items) => {
+        if ($items.length >= 50) {
+          return false; // Break the loop
+        }
+      });
+    }
+  }
+
+  /**
+   * Verifies all 50 items are loaded
+   */
+  verifyAllItemsLoaded() {
+    cy.get('.scroll-item', { timeout: 10000 })
+      .should('have.length', 50)
+      .then(($items) => {
+        // Verify we have items from all pages
+        const page5Items = $items.filter(':contains("Page 5")');
+        expect(page5Items.length).to.be.at.least(1);
+        
+        // Verify last item is Item 50
+        cy.wrap($items.last())
+          .should('contain', 'Item 50');
+      });
+  }
+
+  /**
+   * Verifies the "No more items to load" message
+   */
+  verifyNoMoreItemsMessage() {
+    cy.contains('.text-center', 'No more items to load')
+      .should('be.visible');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
