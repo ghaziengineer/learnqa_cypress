@@ -5,6 +5,9 @@ import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import { footerPage } from "../pages/FooterPage.js";
 import { fileOperationsPage } from "../pages/FileOperationsPage.js";
 import { dynamicElementsPage } from "../pages/DynamicElementsPage.js";  
+import { keyboardMousePage } from "../pages/KeyboardMousePage.js";  
+import { commonPage } from "../pages/CommonPage.js";
+
 /**
  * Page object imports for Cypress Cucumber step definitions
  * Centralizes all page object dependencies for maintainable test automation
@@ -66,16 +69,57 @@ When("I click on the {string} button", (buttonText) => {
     case "Click to Show Delayed Element":
       dynamicElementsPage.ClickToShowDelayedElementButton().should("be.visible").click(); 
       break;  
-   case "Load AJAX Data":
+    case "Load AJAX Data":
       dynamicElementsPage.ClickToLoadAJAXElementButton().should("be.visible").click(); 
       break;  
-
-
+    case "Start Scenario: Use Backspace to clear field":
+      keyboardMousePage.ClickToStartScenarioClearFieldButton().should("be.visible").click(); 
+      break;  
+    case "Start Scenario: Click to open dialog":
+      keyboardMousePage.ClickToStartScenarioOpenDialogButton().should("be.visible").click(); 
+      break;  
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages `);
   }
 });
 
+When("I double-click on the {string} button", (buttonText) => {
+  switch(buttonText) {
+    case "Double-click to edit this text":
+      keyboardMousePage.editableText().should("be.visible").dblclick();
+      break;
+    default:
+      throw new Error(`Button for double click "${buttonText}" not mapped in pages `);
+  }
+});
+
+// Hover with dynamic seconds
+When('I hover over the {string} element for {int} seconds', (elementName, seconds) => {
+  let selector;
+
+  switch(elementName) {
+    case 'Hover over this card':
+      selector = '#hover-card'; 
+      break;
+    default:
+      throw new Error(`Element "${elementName}" not found for hover`);
+  }
+
+  keyboardMousePage.hoverElement(selector, seconds);
+});
+
+Then('the {string} content should be visible', (elementName) => {
+  let selector;
+
+  switch(elementName) {
+    case 'Hover over this card':
+      // The dynamic content when hovering
+      selector = '#hover-card .font-semibold'; 
+      break;
+    default:
+      throw new Error(`Content for "${elementName}" not found`);
+  }
+}); 
 
 /**
  * Verifies redirection to various application pages after user actions
@@ -97,30 +141,24 @@ Then("I should be redirected to the {string} page", (type) => {
     case "Privacy Policy":
       footerPage.verifyRedirection("/privacy/");
       break;
-
     case "Terms of Service":
       footerPage.verifyRedirection("/terms/");
       break;
-
     case "dashboard":
       cy.url().should("include", "/dashboard");
       signInPage.elements.dashboard().should("be.visible");
       break;
-
     case "home":
       cy.url().should("include", "/");
       homePage.elements.title().should("be.visible");
       break;
-      
     case "sign in": 
       cy.url().should("include", "/login");
       break;
-
     default:
       throw new Error(`Unknown page type: ${type}`);
   }
 });
-
 
 /**
  * Verifies that the user remains on the current page without redirection
@@ -136,16 +174,13 @@ Then("I should be redirected to the {string} page", (type) => {
  */
 Then("I should be remain on to the {string} page", (type) => {
   switch (type) {
-
     case "sign in": 
       cy.url().should("include", "/login");
       break;
-
     default:
       throw new Error(`Unknown page type: ${type}`);
   }
 });
-
 
 /**
  * Navigation step to access various application pages from the main interface
@@ -169,20 +204,61 @@ Given("I navigate to {string} page", (pageName) => {
       cy.contains('span', 'Drag and Drop').click();
       cy.url().should('include', '/drag-and-drop/');
       break;
-
     case "File Operations": 
       cy.contains('span', 'File Operations').click();
       cy.url().should("include", "/file-operations/");
       break;
-
     case "Dynamic Elements": 
       cy.contains('span', 'Dynamic Elements').click();
       cy.url().should("include", "/dynamic-elements/");
       break;
-
+    case "Keyboard and Mouse Events": 
+      cy.contains('span', 'Keyboard & Mouse Events').click();
+      cy.url().should("include", "/keyboard-mouse-events/");
+      break;
     default:
       throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);
   }
+});
+
+Given("the {string} should switch to green", (indicator) => {
+  switch (indicator) {
+    case "Clear Field indicator": 
+      keyboardMousePage.clearFieldStatus()
+        .should("have.class", "bg-green-100");
+      break;
+    case "Dialog Confirmation": 
+      keyboardMousePage.dialogConfirmationStatus()
+        .should("have.class", "bg-green-100");
+      break;
+    case "Double click": 
+      keyboardMousePage.doubleClickStatus()
+        .should("have.class", "bg-green-100");
+      break;
+    case "Hover": 
+      keyboardMousePage.hoverStatus()
+        .should("have.class", "bg-green-100");
+      break;
+    default:
+      throw new Error(`indicator "${indicator}" is not mapped `);
+  }
+});
+
+// Validate empty field
+Then("the {string} field should be empty", (fieldName) => {
+  switch (fieldName) {
+    case "Backspace Input":
+    case "Search Field":
+      keyboardMousePage.searchField()
+        .should("have.value", "");
+      break;
+    default:
+      throw new Error(`Unknown field name: ${fieldName}`);
+  }
+});
+
+When('I press {string}', (keyName) => {
+  commonPage.pressKey(keyName);
 });
 
 /**
