@@ -49,6 +49,10 @@ doubleClickStatus() {
   return cy.contains(".p-2.rounded.text-center.text-xs", "Double-click");
 }
 
+hoverStatus() {
+  return cy.contains(".p-2.rounded.text-center.text-xs", "Hover");
+}
+
 assertDialogIsVisible() {
   cy.contains('h3', 'Delete Confirmation')
     .should('be.visible')
@@ -70,6 +74,17 @@ assertSuccessMessageVisible() {
     return cy.get('#editable-text');
   }
 
+  
+  hoverElement(selector, seconds = 2) {
+    cy.get(selector)
+      .trigger('mouseover')
+      .wait(seconds * 1000);
+  }
 
+  verifyContentVisible(selector) {
+    cy.get(selector).should('be.visible');
+  }
 }
+
+
 export const keyboardMousePage = new KeyboardMousePage();

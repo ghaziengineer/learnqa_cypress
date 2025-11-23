@@ -30,3 +30,9 @@ Scenario: Verify dialog confirmation via Enter and closing via Escape
 Scenario: Verify double-click action on a button
     When I double-click on the "Double-click to edit this text" button
     And the "Double click" should switch to green
+
+@hover
+  Scenario: Verify hover reveals card content
+    When I hover over the "Hover over this card" element for 2 seconds
+    Then the "Hover over this card" content should be visible
+    And the "Hover" should switch to green
