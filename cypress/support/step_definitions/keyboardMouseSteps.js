@@ -6,7 +6,11 @@ When('I clear the field using backspace', () => {
   keyboardMousePage.clearFieldUsingBackspace();
 });
 
-Then("the Clear Field indicator should switch to green", () => {
-  keyboardMousePage.clearFieldStatus()
-    .should("have.class", "bg-green-100");
+Then("the dialog should be visible", () => {
+  keyboardMousePage.assertDialogIsVisible();
+});
+
+
+Then("I should see the success message", () => {
+  keyboardMousePage.assertSuccessMessageVisible();
 });

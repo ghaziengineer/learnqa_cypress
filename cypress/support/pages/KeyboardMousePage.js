@@ -9,10 +9,13 @@ export class KeyboardMousePage {
   }
 
 
-ClickToStartScenarioButton() {
+ClickToStartScenarioClearFieldButton() {
     return cy.get('#start-clear-scenario');
 }
 
+ClickToStartScenarioOpenDialogButton() {
+    return cy.get('#start-dialog-scenario');
+}
 
   /**
    * Clears the search field using BACKSPACE until empty
@@ -38,7 +41,26 @@ clearFieldStatus() {
   return cy.contains(".p-2.rounded.text-center.text-xs", "Clear Field");
 }
 
+dialogConfirmationStatus() {
+  return cy.contains(".p-2.rounded.text-center.text-xs", "Dialog Flow");
+}
 
+
+assertDialogIsVisible() {
+  cy.contains('h3', 'Delete Confirmation')
+    .should('be.visible')
+    .parents('.p-6')
+    .should('be.visible');
+}
+assertSuccessMessageVisible() {
+  cy.contains('h3', 'Success')
+    .should('be.visible')
+    .parents('.p-6') // top dialog container
+    .within(() => {
+      cy.get('span').contains('✓').should('be.visible');
+      cy.contains('Item has been successfully deleted').should('be.visible');
+    });
+}
 
 }
 export const keyboardMousePage = new KeyboardMousePage();

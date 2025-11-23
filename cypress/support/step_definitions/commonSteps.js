@@ -6,6 +6,7 @@ import { footerPage } from "../pages/FooterPage.js";
 import { fileOperationsPage } from "../pages/FileOperationsPage.js";
 import { dynamicElementsPage } from "../pages/DynamicElementsPage.js";  
 import { keyboardMousePage } from "../pages/KeyboardMousePage.js";  
+import { commonPage } from "../pages/CommonPage.js";
 
 /**
  * Page object imports for Cypress Cucumber step definitions
@@ -72,9 +73,14 @@ When("I click on the {string} button", (buttonText) => {
       dynamicElementsPage.ClickToLoadAJAXElementButton().should("be.visible").click(); 
       break;  
 
-    case "Start scenario":
-      keyboardMousePage.ClickToStartScenarioButton().should("be.visible").click(); 
+    case "Start Scenario: Use Backspace to clear field":
+      keyboardMousePage.ClickToStartScenarioClearFieldButton().should("be.visible").click(); 
       break;  
+
+    case "Start Scenario: Click to open dialog":
+      keyboardMousePage.ClickToStartScenarioOpenDialogButton().should("be.visible").click(); 
+      break;  
+
 
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages `);
@@ -198,6 +204,25 @@ Given("I navigate to {string} page", (pageName) => {
 
 
 
+Given("the {string} should switch to green", (indicator) => {
+  switch (indicator) {
+    case "Clear Field indicator": 
+  keyboardMousePage.clearFieldStatus()
+    .should("have.class", "bg-green-100");
+      break;
+    case "Dialog Confirmation": 
+  keyboardMousePage.dialogConfirmationStatus()
+    .should("have.class", "bg-green-100");
+      break;
+
+
+
+  default:
+      throw new Error(`indicator "${indicator}" is not mapped `);
+  }
+});
+
+
 
 
 
@@ -213,6 +238,11 @@ Then("the {string} field should be empty", (fieldName) => {
     default:
       throw new Error(`Unknown field name: ${fieldName}`);
   }
+});
+
+
+When('I press {string}', (keyName) => {
+  commonPage.pressKey(keyName);
 });
 
 /**
