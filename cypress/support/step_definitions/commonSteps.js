@@ -88,6 +88,21 @@ When("I click on the {string} button", (buttonText) => {
 });
 
 
+
+When("I double-click on the {string} button", (buttonText) => {
+  switch(buttonText) {
+    case "Double-click to edit this text":
+      keyboardMousePage.editableText().should("be.visible").dblclick();
+      break;
+
+
+
+    default:
+      throw new Error(`Button for double click "${buttonText}" not mapped in pages `);
+  }
+});
+
+
 /**
  * Verifies redirection to various application pages after user actions
  * Validates both URL patterns and page-specific elements for comprehensive navigation testing
@@ -214,7 +229,10 @@ Given("the {string} should switch to green", (indicator) => {
   keyboardMousePage.dialogConfirmationStatus()
     .should("have.class", "bg-green-100");
       break;
-
+    case "Double click": 
+  keyboardMousePage.doubleClickStatus()
+    .should("have.class", "bg-green-100");
+      break;
 
 
   default:

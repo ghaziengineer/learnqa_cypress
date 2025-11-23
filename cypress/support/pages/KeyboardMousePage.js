@@ -45,6 +45,9 @@ dialogConfirmationStatus() {
   return cy.contains(".p-2.rounded.text-center.text-xs", "Dialog Flow");
 }
 
+doubleClickStatus() {
+  return cy.contains(".p-2.rounded.text-center.text-xs", "Double-click");
+}
 
 assertDialogIsVisible() {
   cy.contains('h3', 'Delete Confirmation')
@@ -61,6 +64,12 @@ assertSuccessMessageVisible() {
       cy.contains('Item has been successfully deleted').should('be.visible');
     });
 }
+
+
+  editableText() {
+    return cy.get('#editable-text');
+  }
+
 
 }
 export const keyboardMousePage = new KeyboardMousePage();

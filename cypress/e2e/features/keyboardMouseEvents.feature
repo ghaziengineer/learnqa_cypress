@@ -25,3 +25,8 @@ Scenario: Verify dialog confirmation via Enter and closing via Escape
     Then I should see the success message
     When I press "Escape"
     And the "Dialog Confirmation" should switch to green
+
+@doubleclick
+Scenario: Verify double-click action on a button
+    When I double-click on the "Double-click to edit this text" button
+    And the "Double click" should switch to green
