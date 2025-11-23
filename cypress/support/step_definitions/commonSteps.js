@@ -5,6 +5,8 @@ import { dragAndDropPage } from "../pages/DragAndDropPage.js";
 import { footerPage } from "../pages/FooterPage.js";
 import { fileOperationsPage } from "../pages/FileOperationsPage.js";
 import { dynamicElementsPage } from "../pages/DynamicElementsPage.js";  
+import { keyboardMousePage } from "../pages/KeyboardMousePage.js";  
+
 /**
  * Page object imports for Cypress Cucumber step definitions
  * Centralizes all page object dependencies for maintainable test automation
@@ -70,6 +72,9 @@ When("I click on the {string} button", (buttonText) => {
       dynamicElementsPage.ClickToLoadAJAXElementButton().should("be.visible").click(); 
       break;  
 
+    case "Start scenario":
+      keyboardMousePage.ClickToStartScenarioButton().should("be.visible").click(); 
+      break;  
 
     default:
       throw new Error(`Button "${buttonText}" not mapped in pages `);
@@ -180,8 +185,33 @@ Given("I navigate to {string} page", (pageName) => {
       cy.url().should("include", "/dynamic-elements/");
       break;
 
+    case "Keyboard and Mouse Events": 
+      cy.contains('span', 'Keyboard & Mouse Events').click();
+      cy.url().should("include", "/keyboard-mouse-events/");
+      break;
+
+
     default:
       throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);
+  }
+});
+
+
+
+
+
+
+// Validate empty field
+Then("the {string} field should be empty", (fieldName) => {
+  switch (fieldName) {
+    case "Backspace Input":
+    case "Search Field":
+      keyboardMousePage.searchField()
+        .should("have.value", "");
+      break;
+
+    default:
+      throw new Error(`Unknown field name: ${fieldName}`);
   }
 });
 
