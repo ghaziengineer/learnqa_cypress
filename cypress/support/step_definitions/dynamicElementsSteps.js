@@ -4,7 +4,7 @@ import { dynamicElementsPage } from "../pages/DynamicElementsPage";
 
 
 Then('I should see the delayed element appear', () => {
-  dynamicElementsPage.verifyDelayedElementAppears(7000);
+  dynamicElementsPage.verifyDelayedElementAppears(5000);
 });
 
 

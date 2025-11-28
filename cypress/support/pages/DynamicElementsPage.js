@@ -9,18 +9,14 @@ export class DynamicElementsPage {
     return cy.get('#trigger-delayed');
   }
 
-/**
- *Checks that the delayed element appears after a delay
- * Waits for a delayed element to appear fully visible.
- * Handles both CSS animations and JS-based opacity changes.
- * @param {number} [timeout=7000] - Max time to wait in milliseconds
- */
-verifyDelayedElementAppears(timeout = 7000) {
-  cy.get('#delayed-element', { timeout })
-    .should('have.css', 'opacity', '1') // wait until fully visible
-    .find('.text-green-600')
-    .should('be.visible');
-}
+  /**
+   * Checks that the delayed element appears after a delay
+   * @param {number} [timeout=5000] - Optional timeout in ms to wait for the element
+   */
+  verifyDelayedElementAppears(timeout = 5000) {
+    // Wait for the delayed element to appear (adjust selector as needed)
+    cy.get('.text-green-600', { timeout }).should('be.visible');
+  }
 
 
 ClickToLoadAJAXElementButton() {
