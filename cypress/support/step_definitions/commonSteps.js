@@ -145,6 +145,9 @@ Then("I should be redirected to the {string} page", (type) => {
       footerPage.verifyRedirection("/terms/");
       break;
     case "dashboard":
+      // Wait for login API to avoid redirect back to /login
+      cy.intercept("POST", "**/auth/login**").as("loginRequest"); //catches /auth/login
+      cy.wait("@loginRequest");  //ensures backend authentication completed
       cy.url().should("include", "/dashboard");
       signInPage.elements.dashboard().should("be.visible");
       break;
