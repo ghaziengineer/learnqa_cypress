@@ -136,74 +136,84 @@ verifyAJAXContent() {
       .and('contain', 'Page 1');
   }
 
-  /**
-   * Scrolls to the bottom of the infinite scroll container
-   */
-  scrollToBottomOfInfiniteScroll() {
-    cy.get('#infinite-scroll-container')
-      .scrollTo('bottom', { duration: 1000 });
-    
-    // Wait for new items to load
-    cy.wait(2000);
+/**
+ * Scrolls to the bottom of the infinite scroll container (single scroll)
+ */
+scrollToBottomOfInfiniteScroll() {
+  cy.get('#infinite-scroll-container')
+    .scrollTo('bottom', { duration: 1000 });
+
+  cy.wait(2500); // allow items to load
+}
+
+/**
+ * Verifies more items loaded after the first scroll
+ */
+verifyMoreItemsLoaded() {
+  cy.get('.scroll-item', { timeout: 8000 })
+    .should('have.length.at.least', 20);
+
+  cy.get('.scroll-item')
+    .filter(':contains("Page 2")')
+    .its('length')
+    .should('be.gte', 1);
+}
+
+/**
+ * Recursively scrolls until all items (50) are loaded
+ */
+scrollToLoadAllPages() {
+  const container = '#infinite-scroll-container';
+
+  function loadMore() {
+    cy.get('.scroll-item').then($items => {
+      if ($items.length >= 50) {
+        return; // STOP scrolling when all items loaded
+      }
+
+      // keep scrolling
+      cy.get(container).scrollTo('bottom', { duration: 800 });
+
+      cy.wait(2000);
+
+      loadMore(); // recursive retry
+    });
   }
 
-  /**
-   * Verifies more items loaded after scrolling
-   */
-  verifyMoreItemsLoaded() {
-    cy.get('.scroll-item')
-      .should('have.length.at.least', 20)
-      .then(($items) => {
-        // Check that we have items from page 2
-        const page2Items = $items.filter(':contains("Page 2")');
-        expect(page2Items.length).to.be.at.least(1);
-      });
-  }
+  loadMore();
+}
 
-  /**
-   * Scrolls multiple times to load all pages
-   */
-  scrollToLoadAllPages() {
-    const container = '#infinite-scroll-container';
-    
-    // Scroll multiple times to trigger all page loads
-    for (let i = 0; i < 4; i++) {
-      cy.get(container).scrollTo('bottom', { duration: 1000 });
-      cy.wait(1500);
-      
-      // Check current count and break if we have all items
-      cy.get('.scroll-item').then(($items) => {
-        if ($items.length >= 50) {
-          return false; // Break the loop
-        }
-      });
-    }
-  }
+/**
+ * Verifies all 50 items are loaded
+ */
+verifyAllItemsLoaded() {
+  cy.get('.scroll-item', { timeout: 15000 })
+    .should('have.length', 50)
+    .then($items => {
+      // Page 5 should be present
+      const page5 = $items.filter(':contains("Page 5")');
+      expect(page5.length).to.be.at.least(1);
 
-  /**
-   * Verifies all 50 items are loaded
-   */
-  verifyAllItemsLoaded() {
-    cy.get('.scroll-item', { timeout: 10000 })
-      .should('have.length', 50)
-      .then(($items) => {
-        // Verify we have items from all pages
-        const page5Items = $items.filter(':contains("Page 5")');
-        expect(page5Items.length).to.be.at.least(1);
-        
-        // Verify last item is Item 50
-        cy.wrap($items.last())
-          .should('contain', 'Item 50');
-      });
-  }
+      // Validate last item
+      cy.wrap($items.last())
+        .should('contain', 'Item 50');
+    });
+}
 
-  /**
-   * Verifies the "No more items to load" message
-   */
-  verifyNoMoreItemsMessage() {
-    cy.contains('.text-center', 'No more items to load')
-      .should('be.visible');
-  }
+/**
+ * Verifies the "No more items to load" message
+ */
+verifyNoMoreItemsMessage() {
+  const container = '#infinite-scroll-container';
+
+  // Scroll to very bottom to reveal the message
+  cy.get(container).scrollTo('bottom', { duration: 1000 });
+
+  // Now assert visibility
+  cy.contains('.text-center', 'No more items to load', { timeout: 8000 })
+    .scrollIntoView()
+    .should('be.visible');
+}
 
 
 
