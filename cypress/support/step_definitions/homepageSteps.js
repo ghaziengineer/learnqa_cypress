@@ -10,7 +10,10 @@
  * @requires ../pages/HomePage
  */
 
+// Import Cucumber step definition functions from the preprocessor package
 import { Given, Then } from "@badeball/cypress-cucumber-preprocessor";
+
+// Import the home page object model for home page-specific interactions
 import { homePage } from "../pages/HomePage.js";
 
 /**
@@ -20,7 +23,9 @@ import { homePage } from "../pages/HomePage.js";
  * @example
  * Given I open the homepage
  */
+// Define a Cucumber Given step to navigate to the application homepage
 Given("I open the homepage", () => {
+  // Call page object method to visit the root URL of the application
   homePage.visit();
 });
 
@@ -33,7 +38,9 @@ Given("I open the homepage", () => {
  * @example
  * Then I should see the homepage title "Welcome to Our Application"
  */
+// Define a Cucumber Then step to verify the home page title text
 Then("I should see the homepage title {string}", (titleText) => {
+  // Get the title element and verify it contains the expected text
   homePage.elements.title().should("contain.text", titleText);
 });
 
@@ -47,11 +54,13 @@ Then("I should see the homepage title {string}", (titleText) => {
  * @example
  * Then I should see buttons "Sign In" and "Sign Up"
  */
+// Define a Cucumber Then step to verify authentication buttons in multiple locations
 Then("I should see buttons {string} and {string}", (signIn, signUp) => {
+  // Verify top navigation bar buttons contain expected text
   homePage.elements.topSignInButton().should("contain.text", signIn);
   homePage.elements.topSignUpButton().should("contain.text", signUp);
 
-  // Middle buttons
+  // Verify middle section buttons contain expected text
   homePage.elements.middleSignInButton().should("contain.text", signIn);
   homePage.elements.middleSignUpButton().should("contain.text", signUp);
 });
@@ -65,6 +74,8 @@ Then("I should see buttons {string} and {string}", (signIn, signUp) => {
  * @example
  * Then I should see the "Try Without Account" option
  */
+// Define a Cucumber Then step to verify the guest access option
 Then("I should see the {string} option", (option) => {
+  // Verify the "Try Without Account" button contains the expected text
   homePage.elements.tryWithoutAccountButton().should("contain.text", option);
 });

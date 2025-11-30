@@ -6,7 +6,6 @@ cypress/downloads/
 # Sensitive data
 cypress/fixtures/
 
-
 # Dependencies
 node_modules/
 package-lock.json

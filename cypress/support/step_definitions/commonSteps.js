@@ -1,4 +1,7 @@
+// Import Cucumber step definition functions from the preprocessor package
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
+
+// Import all page object model instances for use in step definitions
 import { homePage } from "../pages/HomePage.js";
 import { signInPage } from "../pages/SignInPage.js";
 import { dragAndDropPage } from "../pages/DragAndDropPage.js";
@@ -39,86 +42,114 @@ import { commonPage } from "../pages/CommonPage.js";
  * 
  * @throws {Error} When the button text is not mapped to a known element
  */
+// Define a Cucumber When step for clicking various buttons throughout the application
 When("I click on the {string} button", (buttonText) => {
+  // Use switch statement to handle different button types based on the parameter
   switch(buttonText) {
     case "Top Sign In":
+      // Click the sign-in button located in the top navigation bar
       homePage.elements.topSignInButton().should("be.visible").click();
       break;
     case "Middle Sign In":
+      // Click the sign-in button located in the middle section of the page
       homePage.elements.middleSignInButton().should("be.visible").click();
       break;
     case "Try Without Account":
+      // Click the button to access the application without authentication
       homePage.elements.tryWithoutAccountButton().should("be.visible").click();
       break;
     case "Logout":
+      // Click the logout button to end the user session
       signInPage.elements.LogoutButton().should("be.visible").click();
       break;
     case "Add Item":
+      // Click the button to add a new draggable item
       dragAndDropPage.addItemButton().should("be.visible").click();
       break;
     case "Reset":
+      // Click the reset button to restore initial state in drag and drop
       dragAndDropPage.resetButton().should("be.visible").click();
       break;  
     case "Download Template Excel":
+      // Click the button to download Excel template file
       fileOperationsPage.DownloadTemplateExcel().should("be.visible").click();
       break;   
     case "Browse Files":
       // Do not click hidden file input, just skip this case
       // File upload should be handled in the step definition using attachFile
+      // This case exists to handle the step in feature files without throwing errors
       break;   
     case "Click to Show Delayed Element":
+      // Click the button that triggers delayed element appearance
       dynamicElementsPage.ClickToShowDelayedElementButton().should("be.visible").click(); 
       break;  
     case "Load AJAX Data":
+      // Click the button that loads data via AJAX request
       dynamicElementsPage.ClickToLoadAJAXElementButton().should("be.visible").click(); 
       break;  
     case "Start Scenario: Use Backspace to clear field":
+      // Click the button that starts the backspace clearing scenario
       keyboardMousePage.ClickToStartScenarioClearFieldButton().should("be.visible").click(); 
       break;  
     case "Start Scenario: Click to open dialog":
+      // Click the button that opens a confirmation dialog
       keyboardMousePage.ClickToStartScenarioOpenDialogButton().should("be.visible").click(); 
       break;  
     default:
+      // Throw error if button text is not recognized in the switch cases
       throw new Error(`Button "${buttonText}" not mapped in pages `);
   }
 });
 
+// Define a Cucumber When step for double-clicking on specific elements
 When("I double-click on the {string} button", (buttonText) => {
   switch(buttonText) {
     case "Double-click to edit this text":
+      // Double-click on the editable text element to enable editing
       keyboardMousePage.editableText().should("be.visible").dblclick();
       break;
     default:
+      // Throw error if element for double-click is not recognized
       throw new Error(`Button for double click "${buttonText}" not mapped in pages `);
   }
 });
 
-// Hover with dynamic seconds
+// Define a Cucumber When step for hovering over elements with configurable duration
 When('I hover over the {string} element for {int} seconds', (elementName, seconds) => {
   let selector;
 
+  // Determine which element to hover over based on the parameter
   switch(elementName) {
     case 'Hover over this card':
+      // Set selector for the hover card element
       selector = '#hover-card'; 
       break;
     default:
+      // Throw error if element name is not recognized
       throw new Error(`Element "${elementName}" not found for hover`);
   }
 
+  // Execute the hover action with specified duration
   keyboardMousePage.hoverElement(selector, seconds);
 });
 
+// Define a Cucumber Then step to verify content visibility after interactions
 Then('the {string} content should be visible', (elementName) => {
   let selector;
 
+  // Determine which content to verify based on the parameter
   switch(elementName) {
     case 'Hover over this card':
-      // The dynamic content when hovering
+      // Set selector for the content that appears when hovering over the card
       selector = '#hover-card .font-semibold'; 
       break;
     default:
+      // Throw error if content name is not recognized
       throw new Error(`Content for "${elementName}" not found`);
   }
+  
+  // Verify the specified content is visible
+  keyboardMousePage.verifyContentVisible(selector);
 }); 
 
 /**
@@ -136,26 +167,33 @@ Then('the {string} content should be visible', (elementName) => {
  * 
  * @throws {Error} When the page type is not mapped for redirection verification
  */
+// Define a Cucumber Then step to verify page redirection after actions
 Then("I should be redirected to the {string} page", (type) => {
   switch (type) {
     case "Privacy Policy":
+      // Verify URL contains privacy policy path and page content is loaded
       footerPage.verifyRedirection("/privacy/");
       break;
     case "Terms of Service":
+      // Verify URL contains terms of service path and page content is loaded
       footerPage.verifyRedirection("/terms/");
       break;
     case "dashboard":
+      // Verify URL contains dashboard path and dashboard element is visible
       cy.url().should("include", "/dashboard");
       signInPage.elements.dashboard().should("be.visible");
       break;
     case "home":
+      // Verify URL is at root path and home page title is visible
       cy.url().should("include", "/");
       homePage.elements.title().should("be.visible");
       break;
     case "sign in": 
+      // Verify URL contains login path
       cy.url().should("include", "/login");
       break;
     default:
+      // Throw error if page type is not recognized
       throw new Error(`Unknown page type: ${type}`);
   }
 });
@@ -172,12 +210,15 @@ Then("I should be redirected to the {string} page", (type) => {
  * 
  * @throws {Error} When the page type is not mapped for persistence verification
  */
+// Define a Cucumber Then step to verify user remains on current page (no redirection)
 Then("I should be remain on to the {string} page", (type) => {
   switch (type) {
     case "sign in": 
+      // Verify URL still contains login path (user was not redirected away)
       cy.url().should("include", "/login");
       break;
     default:
+      // Throw error if page type is not recognized
       throw new Error(`Unknown page type: ${type}`);
   }
 });
@@ -198,66 +239,82 @@ Then("I should be remain on to the {string} page", (type) => {
  * Given I navigate to "Shadow DOM" page
  * @throws {Error} When the page name is not mapped for navigation or URL validation fails
  */
+// Define a Cucumber Given step for navigating to different application pages
 Given("I navigate to {string} page", (pageName) => {
   switch (pageName) {
     case "Drag and Drop": 
+      // Click on drag and drop navigation link and verify URL
       cy.contains('span', 'Drag and Drop').click();
       cy.url().should('include', '/drag-and-drop/');
       break;
     case "File Operations": 
+      // Click on file operations navigation link and verify URL
       cy.contains('span', 'File Operations').click();
       cy.url().should("include", "/file-operations/");
       break;
     case "Dynamic Elements": 
+      // Click on dynamic elements navigation link and verify URL
       cy.contains('span', 'Dynamic Elements').click();
       cy.url().should("include", "/dynamic-elements/");
       break;
     case "Keyboard and Mouse Events": 
+      // Click on keyboard & mouse events navigation link and verify URL
       cy.contains('span', 'Keyboard & Mouse Events').click();
       cy.url().should("include", "/keyboard-mouse-events/");
       break;
     default:
+      // Throw error with helpful message for unmapped page names
       throw new Error(`Page "${pageName}" is not mapped for navigation. Add it to the switch statement in commonSteps.js`);
   }
 });
 
+// Define a Cucumber Given step to verify status indicators turn green (success state)
 Given("the {string} should switch to green", (indicator) => {
   switch (indicator) {
     case "Clear Field indicator": 
+      // Verify clear field status indicator has green background class
       keyboardMousePage.clearFieldStatus()
         .should("have.class", "bg-green-100");
       break;
     case "Dialog Confirmation": 
+      // Verify dialog confirmation status indicator has green background class
       keyboardMousePage.dialogConfirmationStatus()
         .should("have.class", "bg-green-100");
       break;
     case "Double click": 
+      // Verify double click status indicator has green background class
       keyboardMousePage.doubleClickStatus()
         .should("have.class", "bg-green-100");
       break;
     case "Hover": 
+      // Verify hover status indicator has green background class
       keyboardMousePage.hoverStatus()
         .should("have.class", "bg-green-100");
       break;
     default:
+      // Throw error if indicator name is not recognized
       throw new Error(`indicator "${indicator}" is not mapped `);
   }
 });
 
-// Validate empty field
+// Define a Cucumber Then step to verify form fields are empty
 Then("the {string} field should be empty", (fieldName) => {
   switch (fieldName) {
     case "Backspace Input":
     case "Search Field":
+      // Verify the search/input field has empty value
       keyboardMousePage.searchField()
         .should("have.value", "");
       break;
     default:
+      // Throw error if field name is not recognized
       throw new Error(`Unknown field name: ${fieldName}`);
   }
 });
 
+// Define a Cucumber When step for pressing keyboard keys
 When('I press {string}', (keyName) => {
+  // Use common page method to simulate keyboard key press
   commonPage.pressKey(keyName);
 });
 
@@ -270,6 +327,8 @@ When('I press {string}', (keyName) => {
  * Then I wait for "2" seconds
  * Then I wait for "5" seconds
  */
+// Define a Cucumber Then step for explicit waiting (use sparingly - prefer conditional waits)
 Then("I wait for {string} seconds", (seconds) => {
+  // Convert seconds to milliseconds and wait
   cy.wait(parseInt(seconds) * 1000);
 });

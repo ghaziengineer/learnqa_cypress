@@ -9,8 +9,10 @@
  * @requires @4tw/cypress-drag-drop
  */
 
+// Import the Cypress drag and drop plugin to enable drag functionality in tests
 import '@4tw/cypress-drag-drop';
 
+// Export a class that encapsulates all drag and drop page interactions
 export class DragAndDropPage {
 
   /**
@@ -24,12 +26,14 @@ export class DragAndDropPage {
    * defaultItem("Item 1")
    */
   defaultItem(name) {
+    // Mapping object that converts human-readable names to DOM element IDs
     const itemIdMap = {
-      "Item 1": "item-1",
-      "Item 2": "item-2",
-      "Item 3": "item-3",
-      "Item 4": "item-4"
+      "Item 1": "item-1",  // Maps "Item 1" to element with ID 'item-1'
+      "Item 2": "item-2",  // Maps "Item 2" to element with ID 'item-2'
+      "Item 3": "item-3",  // Maps "Item 3" to element with ID 'item-3'
+      "Item 4": "item-4"   // Maps "Item 4" to element with ID 'item-4'
     };
+    // Return Cypress chainable object for the element with the mapped ID
     return cy.get(`#${itemIdMap[name]}`);
   }
 
@@ -44,6 +48,7 @@ export class DragAndDropPage {
    * specialItem("buggy-item-0")
    */
   specialItem(id) {
+    // Return Cypress chainable object for the element with the specified ID
     return cy.get(`#${id}`);
   }
 
@@ -54,6 +59,7 @@ export class DragAndDropPage {
    * @returns {Cypress.Chainable} - Chainable Cypress object for the source area
    */
   sourceArea() {
+    // Get the source area element and verify it exists and is visible
     return cy.get('.card-content .space-y-3').should('exist').should('be.visible');
   }
 
@@ -64,6 +70,7 @@ export class DragAndDropPage {
    * @returns {Cypress.Chainable} - Chainable Cypress object for the drop zone
    */
   dropZone() {
+    // Get the drop zone element by ID and verify it exists and is visible
     return cy.get('#drop-zone').should('exist').should('be.visible');
   }
 
@@ -78,8 +85,9 @@ export class DragAndDropPage {
    * dragDefaultItemToDropZone("Item 1")
    */
   dragDefaultItemToDropZone(name) {
+    // Get the default item, verify it exists and is visible, then drag to drop zone
     this.defaultItem(name).should('exist').should('be.visible')
-      .drag('#drop-zone');
+      .drag('#drop-zone');  // Use drag-drop plugin to perform drag operation
   }
 
   /**
@@ -93,8 +101,9 @@ export class DragAndDropPage {
    * dragSpecialItemToDropZone("buggy-item-0")
    */
   dragSpecialItemToDropZone(id) {
+    // Get the special item, verify it exists and is visible, then drag to drop zone
     this.specialItem(id).should('exist').should('be.visible')
-      .drag('#drop-zone');
+      .drag('#drop-zone');  // Use drag-drop plugin to perform drag operation
   }
 
   /**
@@ -107,6 +116,7 @@ export class DragAndDropPage {
    * dragMultipleDefaultItems(['Item 1', 'Item 2', 'Item 3', 'Item 4'])
    */
   dragMultipleDefaultItems(names) {
+    // Loop through each name in the array and drag each item to drop zone
     names.forEach(name => this.dragDefaultItemToDropZone(name));
   }
 
@@ -121,19 +131,28 @@ export class DragAndDropPage {
    * dragDefaultItemToInvalidZone("Item 1")
    */
   dragDefaultItemToInvalidZone(name) {
+    // Access the document to create a temporary invalid drop zone element
     cy.document().then(doc => {
+      // Create a new div element for invalid drop zone
       const invalid = doc.createElement('div');
+      // Set ID for targeting
       invalid.id = 'invalid-drop-zone';
+      // Set minimal dimensions
       invalid.style.width = '1px';
       invalid.style.height = '1px';
+      // Position absolutely at top-left corner
       invalid.style.position = 'absolute';
       invalid.style.top = '0';
       invalid.style.left = '0';
+      // Append the element to the document body
       doc.body.appendChild(invalid);
     });
 
+    // Verify the invalid zone exists and is visible
     cy.get('#invalid-drop-zone').should('exist').should('be.visible');
+    // Drag the specified item to the invalid zone
     this.defaultItem(name).drag('#invalid-drop-zone');
+    // Remove the temporary invalid zone after the drag operation
     cy.get('#invalid-drop-zone').then(el => el.remove());
   }
 
@@ -143,6 +162,7 @@ export class DragAndDropPage {
    * @returns {Cypress.Chainable} - Chainable Cypress object for the add item button
    */
   addItemButton() {
+    // Find button with class 'btn' containing exact text "Add Item" and verify visibility
     return cy.get('button.btn').contains('Add Item').should('exist').should('be.visible');
   }
 
@@ -152,8 +172,8 @@ export class DragAndDropPage {
    * 
    * @returns {Cypress.Chainable} - Chainable Cypress object for the reset button
    */
-
   resetButton() {
+    // Find button containing exact text "Reset" (using regex ^Reset$) and verify visibility
     return cy.contains('button', /^Reset$/).should('exist').should('be.visible');
   }
 }
@@ -163,4 +183,5 @@ export class DragAndDropPage {
  * 
  * @type {DragAndDropPage}
  */
+// Create and export a singleton instance for easy import and use in test files
 export const dragAndDropPage = new DragAndDropPage();

@@ -1,60 +1,90 @@
+# Name of the GitHub Actions workflow that will appear in the Actions tab
 name: Cypress Tests
 
+# Trigger configuration - defines when this workflow should run
 on:
+  # Run on push events to the specified branches
   push:
-    branches: [ main ]
+    branches: [main] # List of branches that trigger the workflow on push
+  # Also run on pull request events to the specified branches
   pull_request:
-    branches: [ main ]
+    branches: [main] # List of branches that trigger the workflow on PRs
 
+# Definition of jobs that will be executed as part of this workflow
 jobs:
+  # Name of the job (can be referenced in other parts of the workflow)
   cypress-tests:
-    runs-on: ubuntu-latest
+    # Specifies the type of virtual machine runner to use
+    runs-on: ubuntu-latest # Uses the latest Ubuntu runner
 
+    # List of steps that will be executed sequentially as part of this job
     steps:
+      # Step 1: Checkout the repository code
       - name: Checkout code
+        # Uses the official GitHub checkout action to get the repository code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Node.js environment
       - name: Setup Node.js
+        # Uses the official GitHub setup-node action
         uses: actions/setup-node@v4
+        # Configuration parameters passed to the action
         with:
-          node-version: '20'
+          node-version: "20" # Specifies Node.js version 20 to be installed
 
+      # Step 3: Install project dependencies
       - name: Install dependencies
+        # Shell command to install npm packages
         run: npm install
 
+      # Step 4: Create test data file from GitHub secret
       - name: Create testData.json from secret
+        # Multi-line shell script (the pipe | indicates multi-line)
         run: |
+          # Write the content of the TEST_DATA_JSON secret to a file
           echo '${{ secrets.TEST_DATA_JSON }}' > cypress/fixtures/testData.json
+          # Print confirmation message
           echo "testData.json created from GitHub Secret"
 
+      # Step 5: Create Excel fixture file from base64 encoded secret
       - name: Create template_data.xlsx from secret
         run: |
+          # Check if the secret is set, exit with error if not
           if [ -z "${{ secrets.TEMPLATE_DATA_XLSX_BASE64 }}" ]; then
             echo "Error: TEMPLATE_DATA_XLSX_BASE64 secret is not set."
-            exit 1
+            exit 1  # Exit with error code 1
           fi
+          # Decode the base64 secret and write to Excel file
           echo '${{ secrets.TEMPLATE_DATA_XLSX_BASE64 }}' | base64 -d > cypress/fixtures/template_data.xlsx
           echo "template_data.xlsx fixture created from GitHub Secret"
 
+      # Step 6: Verify that test data files were created successfully
       - name: Verify test data
         run: |
+          # List files in the fixtures directory with details
           ls -la cypress/fixtures/
+          # Print success message
           echo "Test data files created successfully"
 
+      # Step 7: Execute Cypress tests in headless mode
       - name: Run Cypress tests
+        # Run Cypress tests using npx (npm package executor)
         run: npx cypress run
 
+      # Step 8: Upload test artifacts only if the previous steps failed
       - name: Upload test results on failure
+        # Conditional execution - only run if previous steps failed
         if: failure()
+        # Use the upload-artifact action to save test results
         uses: actions/upload-artifact@v4
+        # Configuration for the upload action
         with:
-          name: cypress-failures
-          path: |
-            cypress/screenshots/
-            cypress/videos/
-          retention-days: 3
-
-###Notes          
+          name: cypress-failures # Name of the artifact
+          path: | # List of paths to upload (multi-line)
+            cypress/screenshots/  # Screenshots taken during test failures
+            cypress/videos/       # Video recordings of test runs
+          retention-days: 3 # How long to keep the artifacts (3 days)
+###Notes
 # To block merges when tests fail, configure branch protection in GitHub:
 # 1. Go to Repository Settings → Branches.
 # 2. Under "Branch protection rules", click "Add rule".
